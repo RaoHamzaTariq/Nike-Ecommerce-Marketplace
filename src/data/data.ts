@@ -34,3 +34,24 @@ export const items:Items[] = [
       image: "nike-air-max-90",
     },
   ];
+
+
+export const products:Product[] = [
+  {
+    "name": "Nike Air Force 1 Mid '07",
+    "tag": "Men's Shoes",
+    "color": 1, // Assuming this refers to a single color variant
+    "category": "Shoes",
+    "price": 10796.00,
+    "image": "https://example.com/image1.jpg" // Replace with actual image URL
+  },
+  {
+    "name": "Nike Court Vision Low Next Nature",
+    "tag": "Men's Shoes",
+    "color": 1, // Assuming this is a single color variant, or assign a specific color code
+    "category": "Shoes",
+    "price": 4995.00,
+    "image": "https://example.com/image2.jpg"
+  },
+  // ... other products ...
+]
