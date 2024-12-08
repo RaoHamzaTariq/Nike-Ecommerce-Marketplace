@@ -172,7 +172,7 @@ const CheckOut = () => {
         height={208}
       />
       <div className='text-sm text-[#8d8d8d]'>
-        <p className='text-[#111111]'>Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top</p>
+        <p className='text-[#111111]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
         <p>Qty 1</p>
         <p>Size L</p>
         <p>{"₹ 3 895.00"}</p>

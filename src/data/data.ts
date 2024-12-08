@@ -5,6 +5,15 @@ export interface Items{
     image: string;
 }
 
+export interface Product{
+  name: string;
+  tag:string;
+  color:number
+  category: string;
+  price: string;
+  image: string;
+}
+
 export const items:Items[] = [
     {
       name: "Nike Air Max Pulse",
