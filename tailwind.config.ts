@@ -15,6 +15,7 @@ const config: Config = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         roboto: ["Roboto","sans-serif"],
+        inter: ["Inter", "sans-serif"],
         helvetica: "[var(--font-helvetica)]"
       }
     },

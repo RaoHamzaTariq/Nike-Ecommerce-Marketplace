@@ -5,7 +5,7 @@ import { CiHeart } from 'react-icons/ci'
 
 const Navbar = () => {
   return (
-    <div className='max-h-24 text-[#111111]'>
+    <div className='max-h-24 w-full text-[#111111]'>
         <div className='h-9 max-h-9 bg-[#F5F5F5] flex justify-between items-center px-3 sm:px-14'>
             <div className='w-6 h-6'>
             <Image src={'/Images/home/footballer-logo.png'} alt={'Jorden Logo'} width={24} height={24}/>
