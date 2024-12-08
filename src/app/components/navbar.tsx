@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { IoBagOutline, IoSearch } from 'react-icons/io5'
-import { FaRegHeart } from 'react-icons/fa'
 import { CiHeart } from 'react-icons/ci'
 
 const Navbar = () => {

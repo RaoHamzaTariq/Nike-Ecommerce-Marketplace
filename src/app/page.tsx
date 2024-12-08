@@ -1,9 +1,242 @@
+import Image from "next/image";
+import BestOfAirMax from "./components/best-air-max";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import GearUp from "./components/gear-up";
+
 export default function Home() {
   return (
     <>
-    <div>
-      Home
-    </div>
+      <div>
+        {/* Hero Section */}
+        <section className="md:pb-36 sm:pb-28 pb-20">
+          <div className="py-1 flex flex-col gap-1 text-[#111111]">
+            <p className="text-[17px] text-center font-medium">
+              Hello Nike App
+            </p>
+            <p className="text-[11px] text-center">
+              Download the app to access everything Nike.{" "}
+              <span className="font-medium underline">Get Your Great</span>
+            </p>
+          </div>
+          <div className="mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex-col flex gap-12">
+            <Image
+              src={"/Images/home/hero-img.png"}
+              alt={"Hero Image"}
+              width={1344}
+              height={700}
+            />
+            <div className="flex flex-col gap-6 justify-between items-center">
+              <p className="text-base -mb-5">First Look</p>
+              <h1 className="text-5xl sm:text-[56px] text-center font-medium">
+                NIKE AIR MAX PLUSE
+              </h1>
+              <p className="text-base text-center max-w-[551px]">
+                Extreme comfort. Hyper durable. Max volume. Introducing the Air
+                Max Pulse —designed to push you past your limits and help you go
+                to the max.
+              </p>
+              <div className="flex gap-5">
+                <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
+                  Notify Me
+                </button>
+                <button className="text-base rounded-3xl  text-white bg-[#111111] px-4 sm:px-5  py-2">
+                  Shop Air Max
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Best of Air Max Section */}
+        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-3">
+          <div className="py-1 flex justify-between gap-1 text-[#111111]">
+            <p className="text-2xl font-medium">Best of Air Max</p>
+            <div className="flex items-center gap-3">
+              <p className="text-base font-medium">Shop</p>
+              <div className="flex gap-2">
+                <button className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+                  <IoIosArrowBack />
+                </button>
+                <button className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+                  <IoIosArrowForward />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="md:grid-cols-3 sm:grid-cols-2 grid-cols-1 grid gap-3">
+            <BestOfAirMax
+              name={"Nike Air Max Pulse"}
+              category={"Women's Shoes"}
+              price={"13 995"}
+              image={"nike-air-max-plus"}
+            />
+            
+            <div className={"hidden sm:!block"}>
+            <BestOfAirMax
+              
+              name={"Nike Air Max Pulse"}
+              category={"Men's Shoes"}
+              price={"13 995"}
+              image={"nike-air-max-plus"}
+            />
+            </div><div className={"hidden md:!block"}>
+            <BestOfAirMax
+              
+              name={"Nike Air Max 97 SE"}
+              category={"Men's Shoes"}
+              price={"13 995"}
+              image={"nike-air-max-97-se"}
+            />
+            </div>
+            </div>
+        </section>
+
+        {/* Featured Section */}
+        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10">
+          <div className="py-1 flex flex-col gap-1 text-[#111111]">
+            <p className="text-2xl font-medium">Featured</p>
+          </div>
+          <div className="mt-6 flex-col flex gap-12">
+            <Image
+              src={"/Images/home/featured-img.png"}
+              alt={"Hero Image"}
+              width={1344}
+              height={700}
+            />
+            <div className="flex flex-col gap-7 justify-between items-center">
+              <h1 className="text-5xl sm:text-[56px] text-center font-medium">
+                STEP INTO WHAT FEELS GOOD
+              </h1>
+              <p className="text-base text-center max-w-[551px]">
+                Cause everyone should know the feeling of running in that
+                perfect pair.
+              </p>
+              <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
+                Find Your Shoe
+              </button>
+            </div>
+          </div>
+        </section>
+
+          {/* Gear Up Section */}
+      <GearUp/>
+
+        {/* Don't Miss Section */}
+        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10">
+          <div className="py-1 flex flex-col gap-1 text-[#111111]">
+            <p className="text-2xl font-medium">{"Don't Miss"}</p>
+          </div>
+          <div className="mt-6 flex-col flex gap-12">
+            <Image
+              src={"/Images/home/dont-miss-sec-img.png"}
+              alt={"Hero Image"}
+              width={1344}
+              height={700}
+            />
+            <div className="flex flex-col gap-7 justify-between items-center">
+              <h1 className="text-5xl sm:text-[56px] text-center font-medium">
+                FLIGHT ESSENTIALS
+              </h1>
+              <p className="text-base text-center max-w-[551px]">
+                Your built-to-last, all-week wears—but with style only Jordan
+                Brand can deliver.
+              </p>
+              <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
+                Shop
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* The Essentials Section */}
+        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10">
+          <div className="py-1 flex flex-col gap-1 text-[#111111]">
+            <p className="text-2xl font-medium">{"Don't Miss"}</p>
+          </div>
+          <div className="mt-6 flex-col flex gap-12">
+            <div className="flex-col flex sm:flex-row gap-3">
+              <div className="relative">
+                <Image
+                  src={"/Images/home/essentials-men.png"}
+                  alt={"Hero Image"}
+                  width={440}
+                  height={540}
+                />
+                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                  {"Men's"}
+                </button>
+              </div>
+              <div className="relative">
+                <Image
+                  src={"/Images/home/essentials-women.png"}
+                  alt={"Hero Image"}
+                  width={440}
+                  height={540}
+                />
+                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                  {"Women's"}
+                </button>
+              </div>
+              <div className="relative">
+                <Image
+                  src={"/Images/home/essentials-kids.png"}
+                  alt={"Hero Image"}
+                  width={440}
+                  height={540}
+                />
+                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                  Kids
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 text-[#757575] flex justify-center ">
+          <div className="max-w-[800px] w-[800px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+            <ul className="text-base flex flex-col gap-3 text-center sm:text-start">
+              <li className="text-[#111111] mb-3 font-medium">Icons</li>
+              <li>Air Force 1</li>
+              <li>Huarache</li>
+              <li>Air Max 90</li>
+              <li>Air Max 95</li>
+            </ul>
+            <ul className="text-base flex flex-col gap-3 text-center sm:text-start">
+              <li className="text-[#111111] mb-3 font-medium">Shoes</li>
+              <li>All Shoes</li>
+              <li>Custom Shoes</li>
+              <li>Jordan Shoes</li>
+              <li>Running Shoes</li>
+            </ul>
+
+            <ul className="text-base flex flex-col gap-3 text-center sm:text-start">
+              <li className="text-[#111111] mb-3 font-medium">Shoes</li>
+              <li>All Clothing</li>
+              <li>Modest Wear</li>
+              <li>Hoodies & Pullovers</li>
+              <li>Shirts & Tops</li>
+            </ul>
+
+            <ul className="text-base flex flex-col gap-3 text-center sm:text-start">
+              <li className="text-[#111111] mb-3 font-medium">Shoes</li>
+              <li>Infant & Toddler Shoes</li>
+              <li>{"Kids' Shoes"}</li>
+              <li>{"Kids' Jordan Shoes"}</li>
+              <li>{"Kids' Basketball Shoes"}</li>
+            </ul>
+          </div>
+        </section>
+
+        
+
+        
+
+        {/* <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex gap-3">
+      <Carousel items={items} />
+      </section> */}
+
+    
+      </div>
     </>
   );
 }

@@ -9,3 +9,7 @@
 *{
     @apply font-helvetica
 }
+
+.social-media{
+    @apply w-7 h-7 text-xl p-1 bg-[#7e7e7e] rounded-[50%]
+}
