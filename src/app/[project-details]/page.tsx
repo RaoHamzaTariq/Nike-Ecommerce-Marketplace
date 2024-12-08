@@ -5,7 +5,7 @@ import { TbShoppingCart } from 'react-icons/tb'
 const ProductDetail = () => {
   return (
     <div className='flex flex-col sm:flex-row justify-between lg:mx-40 md:mx-32 sm:mx-20 mx-10 lg:my-32 md:my-24 sm:my-16 my-10'>
-        <div className='max-h-[653px] '>
+        <div className='h-[653px] max-h-[653px] '>
         <Image src={`/Images/products/nike-air-force-plt.png`} alt={"Hero Image"} width={653} height={653}/>
         </div>
         <div className='font-poppins flex flex-col gap-3'>
