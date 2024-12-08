@@ -10,7 +10,7 @@ export interface Product{
   tag:string;
   color:number
   category: string;
-  price: string;
+  price: number;
   image: string;
 }
 
