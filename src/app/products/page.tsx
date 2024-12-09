@@ -2,6 +2,8 @@ import React from 'react'
 import ProductCard from '../components/product-card'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { BsFilter } from 'react-icons/bs'
+import { Product, products } from '@/data/data'
+import Link from 'next/link'
 
 const Products = () => {
   return (
@@ -16,7 +18,7 @@ const Products = () => {
         </div>
         
     <div className='flex gap-10 '>
-        <div className='hidden sm:!flex flex-col gap-10 '>
+        <div className='hidden sm:!flex flex-col gap-10 max-w-[260px] w-[260px]'>
             <ul className='flex flex-col gap-4 text-base font-medium'>
            
     <li>Shoes</li>
@@ -36,19 +38,19 @@ const Products = () => {
     <div className=' flex flex-col gap-3 w-full'>
         <h4 className='text-base font-medium flex justify-between items-center w-full'>Gender  <IoIosArrowUp /></h4>
         <div className='flex flex-col gap-1'>
-        <div className="flex items-start text-base gap-2 ">
+        <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           Men
         </p>
       </div>
-      <div className="flex items-start text-base gap-2 ">
+      <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           Women
         </p>
       </div>
-      <div className="flex items-start text-base gap-2 ">
+      <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           Unisex
@@ -59,13 +61,13 @@ const Products = () => {
     <div className=' flex flex-col gap-3 w-full'>
         <h4 className='text-base font-medium flex justify-between items-center w-full'>Kids<IoIosArrowUp /></h4>
         <div className='flex flex-col gap-1'>
-        <div className="flex items-start text-base gap-2 ">
+        <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           Boys
         </p>
       </div>
-      <div className="flex items-start text-base gap-2 ">
+      <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           Girls
@@ -76,13 +78,13 @@ const Products = () => {
     <div className=' flex flex-col gap-3 w-full'>
         <h4 className='text-base font-medium flex justify-between items-center w-full'>Shop By Price  <IoIosArrowUp /></h4>
         <div className='flex flex-col gap-1'>
-        <div className="flex items-start text-base gap-2 ">
+        <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           {"Under ₹ 2 500.00"}
         </p>
       </div>
-      <div className="flex items-start text-base gap-2 ">
+      <div className="flex items-center text-base gap-2 ">
         <input type="checkbox" />
         <p>
           {"₹ 2 501.00 - ₹ 7 500.00"}
@@ -93,31 +95,17 @@ const Products = () => {
 </div>
            
         </div>
-        <div>
+        <div className='flex flex-col justify-center items-center'>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mx-5 sm:mx-0'>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
-        <ProductCard name={"Nike Air Force 1 Mid '07"} tag={"Just In"} image='nike-air-force-react' price={10795.00} color={1} category={"Men's Shoes"}/>
+      {products.map((product:Product)=>(
+        <Link href={`/products/${product.image}`}><ProductCard key={product.image} name={product.name} tag={product.tag} image={product.image} price={product.price} color={product.color} category={product.category}/></Link>
+      ))}
+        
     </div>
 
-    <div className='flex flex-col gap-4 mt-16'>
+    <div className='flex flex-col gap-4 mt-32'>
       <h3 className='text-[19px] font-medium'>Related Categories</h3>
-      <ul className='grid grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-8 justify-center mx-5 sm:mx-0'>
+      <ul className='flex flex-wrap gap-2  text-xs mx-5 sm:mx-0'>
     <li className='related-catgories'>Best Selling Products</li>
     <li className='related-catgories'>Best Shoes</li>
     <li className='related-catgories'>New Basketball Shoes</li>

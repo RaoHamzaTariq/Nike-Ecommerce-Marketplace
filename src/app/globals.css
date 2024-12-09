@@ -16,5 +16,5 @@
 }
 
 .related-catgories{
-    @apply rounded-[20px] py-2 px-[20px] text-[#111111] border border-gray-400 min-w-[150px]
+    @apply rounded-[20px] py-2 px-[20px] text-[#111111] border border-gray-400 w-[170px]
 }

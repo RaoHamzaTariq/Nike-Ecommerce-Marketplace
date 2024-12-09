@@ -2,6 +2,7 @@ import Image from "next/image";
 import BestOfAirMax from "./components/best-air-max";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import GearUp from "./components/gear-up";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -39,9 +40,9 @@ export default function Home() {
                 <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
                   Notify Me
                 </button>
-                <button className="text-base rounded-3xl  text-white bg-[#111111] px-4 sm:px-5  py-2">
+                <Link href={"/products"}><button className="text-base rounded-3xl  text-white bg-[#111111] px-4 sm:px-5  py-2">
                   Shop Air Max
-                </button>
+                </button></Link>
               </div>
             </div>
           </div>

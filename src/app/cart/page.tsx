@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoHeartOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const Cart = () => {
   return (
@@ -112,7 +113,7 @@ const Cart = () => {
               <p>₹ 20,890.00</p>
             </div>
           </div>
-          <button className="py-[10px] w-full mt-8 bg-[#111111] rounded-[30px] text-center text-white">Member Checkout</button>
+         <Link href={"/checkout"}><button className="py-[10px] w-full mt-8 bg-[#111111] rounded-[30px] text-center text-white">Member Checkout</button></Link>
         </div>
       </div>
     </div>
