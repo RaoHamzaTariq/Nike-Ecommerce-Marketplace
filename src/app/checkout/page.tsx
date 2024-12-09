@@ -58,9 +58,9 @@ const CheckOut = () => {
         defaultValue="State/Territory"
       >
         <option>State/Territory</option>
-        <option>United States</option>
-        <option>United Kingdom</option>
-        <option>Canada</option>
+        <option>Punjab</option>
+        <option>Bihar</option>
+        <option>Maharashtra</option>
       </select>
       <select
         className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
@@ -73,13 +73,13 @@ const CheckOut = () => {
       </select>
       </div>
       
-        <div className="flex items-center  gap-2">
+        <div className="flex items-center  gap-3">
           <input type="checkbox" />
-          <p className="text-[#bcbcbc]">Save this address to my profile</p>
+          <p className="text-[#111111]">Save this address to my profile</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <input type="checkbox" />
-          <p className="text-[#bcbcbc]">Make this my preferred address</p>
+          <p className="text-[#111111]">Make this my preferred address</p>
         </div>
       
     </div>
@@ -91,7 +91,7 @@ const CheckOut = () => {
         className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
         placeholder="Email"
       />
-      <p className="text-xs text-[#8d8d8d]">
+      <p className="text-xs mx-4 text-[#8d8d8d]">
       A confirmation email will be sent after checkout.
       </p>
             </div>
@@ -101,7 +101,7 @@ const CheckOut = () => {
         className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
         placeholder="Phone Number"
       />
-      <p className="text-xs text-[#8d8d8d]">
+      <p className="text-xs mx-4 text-[#8d8d8d]">
       A carrier might contact you to confirm delivery.
       </p>
             </div>
@@ -114,7 +114,7 @@ const CheckOut = () => {
         className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
         placeholder="PAN"
       />
-      <p className="text-xs text-[#8d8d8d]">
+      <p className="text-xs mx-4 text-[#8d8d8d]">
       Enter your PAN to enable payment with UPI, Net Banking or local card methods
       </p>
             </div>
@@ -124,7 +124,7 @@ const CheckOut = () => {
         className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
         placeholder="Phone Number"
       />
-      <p className="text-xs text-[#8d8d8d]">
+      <p className="text-xs mx-4 text-[#8d8d8d]">
       A carrier might contact you to confirm delivery.
       </p>
             </div>
@@ -137,7 +137,7 @@ const CheckOut = () => {
           <p className="text-[#bcbcbc]">{"I have read and consent to eShopWorld processing my information in accordance with the Privacy Statement and Cookie Policy. eShopWorld is a trusted Nike partner."}</p>
         </div>
         </div>
-        <button className="bg-[#f5f5f5] text-[#757575] mt-14 w-full sm:w-auto sm:px-20 py-3 text-xs">Continue</button>
+        <button className="bg-[#f5f5f5] min-w-full text-[#757575] mt-14 sm:w-auto sm:px-20 py-3 text-xs">Continue</button>
         <ul className='flex flex-col gap-7 mt-7 text-[#757575] text-xl font-medium'>
             <li className='text-[#111111]'>Delivery</li>
             <li>Shipping</li>
@@ -162,9 +162,9 @@ const CheckOut = () => {
             </div>
             <p className="text-xs text-[#111111]">(The total reflects the price of your order, including all duties and taxes)
       </p>
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col items-center sm:items-start mt-5 gap-3'>
         <p className='text-base font-bold'>{"Arrives Mon, 27 Mar - Wed, 12 Apr"}</p>
-        <div className='flex gap-3'>
+        <div className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
         <Image
         src={`/Images/check-out/nike-dri-fit.png`}
         alt={"Logo Image"}
@@ -172,16 +172,14 @@ const CheckOut = () => {
         height={208}
       />
       <div className='text-sm text-[#8d8d8d]'>
-        <p className='text-[#111111]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
+        <p className='text-[#111111] max-w-[200px] sm:max-w-[320px]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
         <p>Qty 1</p>
         <p>Size L</p>
         <p>{"₹ 3 895.00"}</p>
       </div>
         </div>
-      </div>
-      <div className='flex flex-col gap-3'>
-        <p>{"Arrives Mon, 27 Mar - Wed, 12 Apr"}</p>
-        <div className='flex gap-3'>
+      
+        <div className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
         <Image
         src={`/Images/check-out/nike-air-max.png`}
         alt={"Logo Image"}
@@ -195,9 +193,9 @@ const CheckOut = () => {
         <p>{"₹ 16 995.00"}</p>
       </div>
         </div>
+        </div>
       </div>
         </div>
-    </div>
     </div>
     </div>
   )
