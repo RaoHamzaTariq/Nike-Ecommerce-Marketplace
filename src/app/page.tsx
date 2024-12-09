@@ -7,9 +7,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <div>
+      <div className="w-full">
         {/* Hero Section */}
-        <section className="md:pb-36 sm:pb-28 pb-20">
+        <section className="md:pb-36 sm:pb-28 w-full pb-20">
           <div className="py-1 flex flex-col gap-1 text-[#111111]">
             <p className="text-[17px] text-center font-medium">
               Hello Nike App
