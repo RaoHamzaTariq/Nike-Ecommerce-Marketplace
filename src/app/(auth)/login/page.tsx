@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Login = () => {
   return (
@@ -44,7 +45,7 @@ const Login = () => {
         SIGN IN
       </button>
       <p className="text-sm">
-        Not a Member? <span className="underline text-black">Join Us</span>
+        Not a Member? <Link href={'/joinus'}><span className="underline text-black">Join Us</span></Link>
       </p>
     </div>
   </div>

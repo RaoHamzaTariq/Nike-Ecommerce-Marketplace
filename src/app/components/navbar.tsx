@@ -18,7 +18,7 @@ const Navbar = () => {
                 <li>|</li>
                 <Link href={"/joinus"}><li>Join Us</li></Link>
                 <li>|</li>
-                <Link href={"/signin"}><li>Sign In</li></Link>
+                <Link href={"/login"}><li>Sign In</li></Link>
             </ul>
         </div>
         <div className='max-h-[60px] h-[60px] flex justify-between items-center px-5 py-[10px]'>

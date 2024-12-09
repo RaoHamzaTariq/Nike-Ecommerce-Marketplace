@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const JoinUs = () => {
   return (
@@ -88,7 +89,7 @@ const JoinUs = () => {
         JOIN US
       </button>
       <p className="text-sm">
-        Already a Member? <span className="underline text-black">Sign In</span>
+        Already a Member? <Link href={"/login"}><span className="underline text-black">Sign In</span></Link>
       </p>
     </div>
   </div>
