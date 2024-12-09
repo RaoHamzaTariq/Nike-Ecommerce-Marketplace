@@ -98,7 +98,7 @@ const Products = () => {
         <div className='flex flex-col justify-center items-center'>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mx-5 sm:mx-0'>
       {products.map((product:Product)=>(
-        <Link href={`/products/${product.image}`}><ProductCard key={product.image} name={product.name} tag={product.tag} image={product.image} price={product.price} color={product.color} category={product.category}/></Link>
+        <Link key={product.image} href={`/products/${product.image}`}><ProductCard name={product.name} tag={product.tag} image={product.image} price={product.price} color={product.color} category={product.category}/></Link>
       ))}
         
     </div>

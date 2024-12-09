@@ -112,9 +112,9 @@ export default function Home() {
                 Cause everyone should know the feeling of running in that
                 perfect pair.
               </p>
-              <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
+              <Link href={"/products"}><button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
                 Find Your Shoe
-              </button>
+              </button></Link>
             </div>
           </div>
         </section>
@@ -142,9 +142,9 @@ export default function Home() {
                 Your built-to-last, all-week wears—but with style only Jordan
                 Brand can deliver.
               </p>
-              <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
+             <Link href={"/products"}> <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
                 Shop
-              </button>
+              </button></Link>
             </div>
           </div>
         </section>

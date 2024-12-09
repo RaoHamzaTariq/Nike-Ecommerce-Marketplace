@@ -2,27 +2,28 @@ import React from 'react'
 import Image from 'next/image'
 import { IoBagOutline, IoSearch } from 'react-icons/io5'
 import { CiHeart } from 'react-icons/ci'
+import Link from 'next/link'
 
 const Navbar = () => {
   return (
     <div className='max-h-24 w-full text-[#111111]'>
         <div className='h-9 max-h-9 bg-[#F5F5F5] flex justify-between items-center px-3 sm:px-14'>
             <div className='w-6 h-6'>
-            <Image src={'/Images/home/footballer-logo.png'} alt={'Jorden Logo'} width={24} height={24}/>
+           <Image src={'/Images/home/footballer-logo.png'} alt={'Jorden Logo'} width={24} height={24}/>
             </div>
             <ul className='flex gap-2 sm:gap-5 font-helvetica text-[11px] font-medium '>
-                <li>Find a Store</li>
+            <Link href={"/products"}><li>Find a Store</li></Link>
                 <li>|</li>
-                <li>Help</li>
+                <Link href={"/contact-us"}><li>Help</li></Link>
                 <li>|</li>
-                <li>Join Us</li>
+                <Link href={"/joinus"}><li>Join Us</li></Link>
                 <li>|</li>
-                <li>Sign In</li>
+                <Link href={"/signin"}><li>Sign In</li></Link>
             </ul>
         </div>
         <div className='max-h-[60px] h-[60px] flex justify-between items-center px-5 py-[10px]'>
             <div className='w-16 h-5'>
-            <Image src={'/Images/home/nike-logo.png'} alt={'Jorden Logo'} width={58} height={20}/>
+            <Link href={'/'}><Image src={'/Images/home/nike-logo.png'} alt={'Jorden Logo'} width={58} height={20}/></Link>
             </div>
             <ul className='lg:!flex  hidden gap-2 sm:gap-3 md:gap-6 text-[15px] font-medium'>
                 <li>News and Featured</li>

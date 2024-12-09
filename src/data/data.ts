@@ -210,5 +210,48 @@ export const products:Product[] = [
     category: "Men's Shoes",
     price: 12795.00,
     image: "nike-air-max-90-se"
+  },{
+    name: "Nike One Leak Protection: Period",
+    tag: "Just In",
+    color: 2,
+    category: "Women's Mid-Rise 18cm (approx.) Biker Shorts",
+    price: 7495.00,
+    image: "nike-one-leak"
   },
+  {
+    name: "Nike Dri-FIT Ready",
+    tag: "Just In",
+    color: 3,
+    category: "Men's Short-Sleeve Fitness Top",
+    price: 2495.00,
+    image: "nike-dri-fit-ready"
+  },{
+    name: "Nike Invincible 3 By You",
+    tag: "Just In",
+    color: 6,
+    category: "Custom Men's Road Running Shoes",
+    price: 19295.00,
+    image: "nike-invincible"
+  },{
+    name: "Nike Air Max 90 Futura By You",
+    tag: "Just In",
+    color: 6,
+    category: "Custom Men's Road Running Shoes",
+    price: 17295.00,
+    image: "nike-air-max-90"
+  },{
+    name: "Nike Pegasus Trial 4 GORE-TEX",
+    tag: "Just In",
+    color: 1,
+    category: "Men's Waterproof Trial Running Shoes",
+    price: 14995.00,
+    image: "nike-pegasus"
+  },{
+    name: "Jordan Delta 3 Low SE",
+    tag: "Just In",
+    color: 1,
+    category: "Women's Shoes",
+    price: 12795.00,
+    image: "jorden-delta-low"
+  } 
 ]

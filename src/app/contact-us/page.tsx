@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { FaLocationDot, FaThumbsDown, FaThumbsUp } from 'react-icons/fa6';
 import { IoSearch } from 'react-icons/io5';
@@ -41,12 +42,12 @@ const ContactUs = () => {
                 {"Nike Members can store multiple debit or credit cards in their profile for faster checkout. If you're not already a Member, join us today."}
               </p>
               <div className="flex flex-wrap gap-3">
-                <button className="bg-[#111111] text-white text-base px-[20px] py-[7px] rounded-[30px]">
+                <Link href={'/joinus'}><button className="bg-[#111111] text-white text-base px-[20px] py-[7px] rounded-[30px]">
                   Join Us
-                </button>
-                <button className="bg-[#111111] text-white text-base px-[20px] py-[7px] rounded-[30px]">
+                </button></Link>
+                <Link href={'/products'}><button className="bg-[#111111] text-white text-base px-[20px] py-[7px] rounded-[30px]">
                   Shop Nike
-                </button>
+                </button></Link>
               </div>
             </div>
             <div className="space-y-5">
