@@ -2,10 +2,34 @@ import React from 'react'
 import ProductCard from '../components/product-card'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { BsFilter } from 'react-icons/bs'
-import { Product, products } from '@/data/data'
+// import { Product,  } from '@/data/data'
+import { Product } from '@/data/interfaces'
 import Link from 'next/link'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-const Products = () => {
+
+const Products = async () => {
+
+  const fetchData = async() =>{
+    try {
+      const response = await fetch(`${process.env.API_URL}/api/products`,{
+        cache:'no-cache'
+      })
+      if(!response){
+        throw new Error('Failed to fetch data')
+      }
+      const data = await response.json()
+      return data.data
+    } catch (error) {
+      console.error(error)
+      return []
+    }
+   
+  }
+
+  const fetchedData:Product[] = await fetchData()
+
+
   return (
     <div className='md:pb-36 sm:pb-28 pb-20  mt-10 flex flex-col gap-3 mx-3 sm:mx-5 md:mx-7 lg:mx-10'>
         <div className='flex justify-between '>
@@ -13,7 +37,14 @@ const Products = () => {
             <div className='flex gap-3 '>
                 <p className='text-base flex items-center gap-1'>Filters <BsFilter />
                 </p>
-                <p className='text-base flex items-center gap-1'>Sort By <IoIosArrowDown /></p>
+                {/* <p className='text-base flex items-center gap-1'></p> */}
+                <DropdownMenu>
+  <DropdownMenuTrigger className='text-base flex items-center gap-1'>Sort By <IoIosArrowDown /></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem >Price</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+
             </div>
         </div>
         
@@ -97,9 +128,11 @@ const Products = () => {
         </div>
         <div className='flex flex-col justify-center items-center'>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mx-5 sm:mx-0'>
-      {products.map((product:Product)=>(
-        <Link key={product.image} href={`/products/${product.image}`}><ProductCard name={product.name} tag={product.tag} image={product.image} price={product.price} color={product.color} category={product.category}/></Link>
-      ))}
+      {fetchedData.length>0 ? fetchedData.map((product:Product)=>(
+        <Link key={product.slug?.current} href={`/products/${product.slug?.current}`}><ProductCard name={product.name} tag={product.status} image={product.mainImage} price={product.price} color={product.colors} category={product.category}/></Link>
+      )):(
+        <p>Products not found</p>
+      )}
         
     </div>
 

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
-import localfont from "next/font/local"
-
+import localfont from "next/font/local";
 
 export const metadata: Metadata = {
   title: "Nike Website",
@@ -27,6 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
       <body
         className={` ${helvetica} antialiased`}
       >
@@ -34,6 +34,7 @@ export default function RootLayout({
         {children}
         <Footer/>
       </body>
+
     </html>
   );
 }

@@ -1,13 +1,18 @@
 import React from 'react'
 import Image from 'next/image'
-import { Product } from '@/data/data'
+import { urlFor } from '@/sanity/lib/image'
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
-const ProductCard = (props:Product) => {
+const ProductCard = (props:{image:SanityImageSource,name:string,tag:string,category:string,color:number,price:number}) => {
   return (
     
     <div className='flex flex-col gap-5 max-w-[348px]'>
         <div className=''>
-      <Image src={`/Images/products/${props.image}.png`} alt={`${props.name} Image`} width={348} height={348}/>
+      <Image src={
+                      props.image
+                        ? urlFor( props.image).url()
+                        : "/default-image.png"
+                    } alt={`${props.name} Image`} width={348} height={348}/>
         </div>
         <div className='flex flex-col justify-between gap-3'>
                 <ul className=' font-medium text-base'>
