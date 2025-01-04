@@ -12,7 +12,7 @@ const Products = async () => {
 
   const fetchData = async() =>{
     try {
-      const response = await fetch(`${process.env.API_URL}/api/products`,{
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`,{
         cache:'no-cache'
       })
       if(!response){
