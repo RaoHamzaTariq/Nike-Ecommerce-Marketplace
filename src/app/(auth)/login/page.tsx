@@ -17,6 +17,9 @@ const SignIn = () => {
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`);
+      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+
+
       if (!response.ok) {
         throw new Error('Failed to fetch users');
       }
