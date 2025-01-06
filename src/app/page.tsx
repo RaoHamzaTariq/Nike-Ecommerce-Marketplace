@@ -1,30 +1,10 @@
 import Image from "next/image";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
-import { Product } from "@/data/interfaces";
-import { urlFor } from "@/sanity/lib/image";
 import BestOfAirMax from "@/components/best-of-air-max";
 import GearUp from "@/components/gearup";
 export default async function Home() {
 
-  const fetchData = async() =>{
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`,{
-          cache:'no-cache'
-        })
-        if(!response){
-          throw new Error('Failed to fetch data')
-        }
-        const data = await response.json()
-        return data.data
-      } catch (error) {
-        console.error(error)
-        return []
-      }
-     
-    }
   
-    const fetchedData:Product[] = await fetchData()
   return (
     <>
       <div className="w-full">
