@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductCard from '../components/product-card'
+import ProductCard from '../../components/product-card'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { BsFilter } from 'react-icons/bs'
 // import { Product,  } from '@/data/data'
@@ -128,7 +128,7 @@ const Products = async () => {
         </div>
         <div className='flex flex-col justify-center items-center'>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mx-5 sm:mx-0'>
-      {fetchedData.length>0 ? fetchedData.map((product:Product)=>(
+      {fetchedData ? fetchedData.map((product:Product)=>(
         <Link key={product.slug?.current} href={`/products/${product.slug?.current}`}><ProductCard name={product.name} tag={product.status} image={product.mainImage} price={product.price} color={product.colors} category={product.category}/></Link>
       )):(
         <p>Products not found</p>

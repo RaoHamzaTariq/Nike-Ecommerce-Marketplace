@@ -18,3 +18,13 @@
 .related-catgories{
     @apply rounded-[20px] py-2 px-[20px] text-[#111111] border border-gray-400 w-[170px]
 }
+
+/* In your Tailwind CSS file */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+  

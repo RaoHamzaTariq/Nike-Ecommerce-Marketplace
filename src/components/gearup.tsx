@@ -5,7 +5,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 
-const BestOfAirMax = () => {
+const GearUp = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -77,10 +77,13 @@ const BestOfAirMax = () => {
   };
 
   return (
-    <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col sm:flex-row gap-3">
+    <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-3">
+                <p className="text-2xl font-medium">Gear Up</p>
+    <div className='flex flex-col sm:flex-row justify-center items-center gap-3'>
       {/* Carousel 1 */}
       <div className="w-full lg:w-1/2">
       <div className="py-1 flex  gap-1 text-[#111111]">
+
         <div className="flex items-center w-full justify-end gap-3">
           <p className="text-base font-medium">{"Men's"}</p>
           <div className="flex gap-2">
@@ -165,11 +168,12 @@ const BestOfAirMax = () => {
         )}
       </div>
       </div>
+      </div>
     </section>
   );
 };
 
-export default BestOfAirMax;
+export default GearUp;
 
 
 

@@ -1,10 +1,30 @@
 import Image from "next/image";
-import BestOfAirMax from "./components/best-air-max";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import GearUp from "./components/gear-up";
 import Link from "next/link";
+import { Product } from "@/data/interfaces";
+import { urlFor } from "@/sanity/lib/image";
+import BestOfAirMax from "@/components/best-of-air-max";
+import GearUp from "@/components/gearup";
+export default async function Home() {
 
-export default function Home() {
+  const fetchData = async() =>{
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`,{
+          cache:'no-cache'
+        })
+        if(!response){
+          throw new Error('Failed to fetch data')
+        }
+        const data = await response.json()
+        return data.data
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+     
+    }
+  
+    const fetchedData:Product[] = await fetchData()
   return (
     <>
       <div className="w-full">
@@ -49,48 +69,7 @@ export default function Home() {
         </section>
 
         {/* Best of Air Max Section */}
-        <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-3">
-          <div className="py-1 flex justify-between gap-1 text-[#111111]">
-            <p className="text-2xl font-medium">Best of Air Max</p>
-            <div className="flex items-center gap-3">
-              <p className="text-base font-medium">Shop</p>
-              <div className="flex gap-2">
-                <button className="bg-[#e5e5e5] px-4 py-2 rounded-full">
-                  <IoIosArrowBack />
-                </button>
-                <button className="bg-[#e5e5e5] px-4 py-2 rounded-full">
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="md:grid-cols-3 sm:grid-cols-2 grid-cols-1 grid gap-3">
-            <BestOfAirMax
-              name={"Nike Air Max Pulse"}
-              category={"Women's Shoes"}
-              price={"13 995"}
-              image={"nike-air-max-plus"}
-            />
-            
-            <div className={"hidden sm:!block"}>
-            <BestOfAirMax
-              
-              name={"Nike Air Max Pulse"}
-              category={"Men's Shoes"}
-              price={"13 995"}
-              image={"nike-air-max-plus"}
-            />
-            </div><div className={"hidden md:!block"}>
-            <BestOfAirMax
-              
-              name={"Nike Air Max 97 SE"}
-              category={"Men's Shoes"}
-              price={"13 995"}
-              image={"nike-air-max-97-se"}
-            />
-            </div>
-            </div>
-        </section>
+        <BestOfAirMax/>
 
         {/* Featured Section */}
         <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10">
@@ -120,7 +99,7 @@ export default function Home() {
         </section>
 
           {/* Gear Up Section */}
-      <GearUp/>
+          <GearUp/>
 
         {/* Don't Miss Section */}
         <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10">
@@ -163,9 +142,9 @@ export default function Home() {
                   width={440}
                   height={540}
                 />
-                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                <Link href={"/products"}><button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
                   {"Men's"}
-                </button>
+                </button></Link>
               </div>
               <div className="relative">
                 <Image
@@ -174,9 +153,9 @@ export default function Home() {
                   width={440}
                   height={540}
                 />
-                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                <Link href={"/products"}><button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
                   {"Women's"}
-                </button>
+                </button></Link>
               </div>
               <div className="relative">
                 <Image
@@ -185,9 +164,9 @@ export default function Home() {
                   width={440}
                   height={540}
                 />
-                <button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
-                  Kids
-                </button>
+                <Link href={"/products"}><button className="px-5 py-2 bg-white absolute rounded-3xl left-10 bottom-10">
+                  {"Kid's"}
+                </button></Link>
               </div>
             </div>
           </div>

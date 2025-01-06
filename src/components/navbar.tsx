@@ -39,7 +39,7 @@ const Navbar = () => {
                     <input type="text" placeholder='Search' className='bg-[#f5f5f5]  text-[#cccccc]'/>
                 </div>
                 <CiHeart  className='text-2xl'/>
-                <IoBagOutline className='text-xl'/>
+                <Link href={'/cart'}><IoBagOutline className='text-xl'/></Link>
             </div>
         </div>
     </div>
