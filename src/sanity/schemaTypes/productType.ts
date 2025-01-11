@@ -31,6 +31,11 @@ export const productType = defineType({
         type: 'number',
       }),
       defineField({
+        name: 'rating',
+        title: 'Rating',
+        type: 'number',
+      }),
+      defineField({
         name: 'price',
         title: 'Price',
         type: 'number',

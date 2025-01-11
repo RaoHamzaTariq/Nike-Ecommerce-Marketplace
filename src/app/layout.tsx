@@ -3,38 +3,38 @@ import "./globals.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import localfont from "next/font/local";
+import { ClerkProvider } from '@clerk/nextjs'; // Ensure correct import
 
 export const metadata: Metadata = {
   title: "Nike Website",
-  description: "This website is for the submission of ui ux hackathon",
+  description: "This is the Nike Ecommerce Website",
 };
 
 const helvetica = localfont({
-  src:[
+  src: [
     {
       path: "./fonts/Helvetica.otf",
-      weight: "600"
-    }
+      weight: "600",
+    },
   ],
-  variable: "--font-helvetica"
-})
+  variable: "--font-helvetica",
+});
 
+// RootLayout must be synchronous
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-
-      <body
-        className={` ${helvetica} antialiased`}
-      >
-        <Navbar/>
-        {children}
-        <Footer/>
-      </body>
-
-    </html>
+    <ClerkProvider> 
+      <html lang="en">
+        <body className={`${helvetica.variable} antialiased`}>
+          <Navbar />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

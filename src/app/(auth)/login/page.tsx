@@ -3,50 +3,51 @@ import Image from 'next/image';
 import Link from 'next/link';  
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import bcrypt from 'bcryptjs'; // Ensure bcrypt is installed
-import { User } from '@/data/interfaces';
+import { useSignIn } from '@clerk/nextjs';
+import { isClerkError } from '@/data/data';
+
 
 const SignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+  const { isLoaded, signIn, setActive } = useSignIn();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (!isLoaded || !signIn) {
+      setErrorMessage('Authentication is still loading or not available.');
+      return;
+    }
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`);
-      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+      const signInAttempt = await signIn.create({
+        identifier: email,
+        password,
+      });
 
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-
-      const data = await response.json();
-      
-      // Assuming data.data is an array of users
-      const user = data.data.find((user: User) => user.email === email);
-
-      if (user) {
-        // Compare the hashed password with the input password
-        const isMatch = await bcrypt.compare(password, user.password);
-        
-        if (isMatch) {
-          setErrorMessage(''); // Clear any previous error messages
-          router.push('/'); // Redirect to the homepage or another page
-        } else {
-          setErrorMessage('Invalid password'); // Set error message for invalid password
-          console.error('Invalid password');
-        }
+      // Check if authData is valid
+      if (signInAttempt?.status === 'complete') {
+        // Session created successfully
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.push('/');
+        console.log('Signed in successfully!');
       } else {
-        setErrorMessage('User not found'); // Set error message if user not found
-        console.error('User not found');
+        // Further steps needed (e.g., email verification)
+        console.log(JSON.stringify(signInAttempt, null, 2));
+        setErrorMessage('Further verification required.');
       }
-    } catch (error) {
-      console.error('Sign In error:', error);
-      setErrorMessage('An unexpected error occurred. Please try again later.'); // General error message
+    } 
+    
+    catch (error: unknown) {
+      console.error(JSON.stringify(error, null, 2));
+      if (isClerkError(error)) {
+        setErrorMessage(error.errors[0].message);
+      } else {
+        setErrorMessage('An unexpected error occurred. Please try again later.');
+      }
     }
   };
 
@@ -65,8 +66,6 @@ const SignIn = () => {
             YOUR ACCOUNT FOR EVERYTHING NIKE
           </h4>
         </div>
-        
-        
 
         <form onSubmit={handleSubmit} className="text-[#8d8d8d] py-1 flex flex-col items-center gap-[14px]">
           <input
@@ -84,7 +83,7 @@ const SignIn = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {/* Display error message if exists */}
-        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-2 text-xs items-start sm:items-center">
             <div className="flex items-center gap-2">
               <input type="checkbox" />
@@ -107,6 +106,7 @@ const SignIn = () => {
             </Link>
           </p>
         </form>
+
       </div>
     </div>
   );

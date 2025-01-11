@@ -1,24 +1,36 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import { IoBagOutline, IoSearch } from 'react-icons/io5'
 import { CiHeart } from 'react-icons/ci'
 import Link from 'next/link'
+import { useAuth, UserButton } from '@clerk/nextjs'
 
-const Navbar = () => {
+const Navbar =  () => {
+
+    const {userId } = useAuth()
+
   return (
     <div className='max-h-24 w-full text-[#111111]'>
         <div className='h-9 max-h-9 bg-[#F5F5F5] flex justify-between items-center px-3 sm:px-14'>
             <div className='w-6 h-6'>
            <Image src={'/Images/home/footballer-logo.png'} alt={'Jorden Logo'} width={24} height={24}/>
             </div>
-            <ul className='flex gap-2 sm:gap-5 font-helvetica text-[11px] font-medium '>
+            <ul className='flex gap-2 sm:gap-5 font-helvetica text-[11px] font-medium items-center '>
             <Link href={"/products"}><li>Find a Store</li></Link>
                 <li>|</li>
                 <Link href={"/contact-us"}><li>Help</li></Link>
                 <li>|</li>
-                <Link href={"/joinus"}><li>Join Us</li></Link>
+                {
+                    !userId ? <Link href={"/joinus"}><li>Join Us</li></Link> : <Link href={"/profile"}><li>Profile</li></Link>   
+                }
+                
                 <li>|</li>
-                <Link href={"/login"}><li>Sign In</li></Link>
+                {
+                    !userId ? <Link href={"/login"}><li>Sign In</li></Link> :  <UserButton afterSignOutUrl="/" />   
+                }
+                
+               
             </ul>
         </div>
         <div className='max-h-[60px] h-[60px] flex justify-between items-center px-5 py-[10px]'>

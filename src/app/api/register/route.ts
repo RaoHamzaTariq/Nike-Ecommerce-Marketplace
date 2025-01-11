@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+ 
   const { email, password, firstName, lastName, dateOfBirth, country, gender } = data;
 
   try {
