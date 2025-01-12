@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import localfont from "next/font/local";
-import { ClerkProvider } from '@clerk/nextjs'; // Ensure correct import
+import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: "Nike Website",
@@ -20,21 +20,20 @@ const helvetica = localfont({
   variable: "--font-helvetica",
 });
 
-// RootLayout must be synchronous
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider> 
-      <html lang="en">
-        <body className={`${helvetica.variable} antialiased`}>
+    <html lang="en">
+      <body className={`${helvetica.variable} antialiased`}>
+        <ClerkProvider>
           <Navbar />
           {children}
           <Footer />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
