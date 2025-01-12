@@ -11,12 +11,7 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (req.nextUrl.pathname.startsWith("/studio")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
 
-  
-  
   if (!auths.userId && protectedRoutes.includes(req.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
