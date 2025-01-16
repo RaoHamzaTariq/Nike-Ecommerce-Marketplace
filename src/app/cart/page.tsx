@@ -1,10 +1,28 @@
-import React from "react";
+'use client'
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoHeartOutline } from "react-icons/io5";
 import Link from "next/link";
+import { useCart } from "@/components/context/CartContext";
+import { CartProducts} from "@/data/interfaces";
+import { urlFor } from "@/sanity/lib/image";
+
 
 const Cart = () => {
+  const {cart} = useCart();
+  const subTotals = cart.reduce((accumulator, item) : number => {
+    return accumulator + (item.subTotal || 0);
+  }, 0)
+  const discountPercentage : number = 5
+  console.log(cart)
+
+  const OrderSummary = {
+    subTotals: subTotals.toFixed(2),
+    discount : (subTotals * (discountPercentage/100)).toFixed(2),
+    deliveryFee : 3,
+    grandTotal : ((subTotals - (subTotals*(discountPercentage/100))) + 3).toFixed(2)
+  }
   return (
     <div className="flex flex-col justify-center items-center  w-full text-[#111111] font-inter px-4 sm:px-6 lg:px-8 py-6">
       <div className="max-w-[1100px] flex flex-col lg:flex-row gap-8 w-full">
@@ -28,11 +46,15 @@ const Cart = () => {
 
           {/* Product List */}
           <div className="space-y-6 mt-5">
-            {/* Product 1 */}
-            <div className="flex flex-col items-center sm:items-start sm:flex-row gap-6">
+            {cart.length>0 ? cart.map((product:CartProducts)=>(
+              <div key={product.slug} className="flex flex-col items-center sm:items-start sm:flex-row gap-6">
               <Image
-                src={`/Images/check-out/nike-dri-fit.png`}
-                alt={"Nike Dri-FIT"}
+                src={
+                                    product.image
+                                      ? urlFor(product.image).url()
+                                      : "/default-image.png"
+                                  } 
+                alt={product.name}
                 width={150}
                 height={150}
                 className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] mx-auto sm:mx-0"
@@ -41,13 +63,13 @@ const Cart = () => {
                 {/* Product Details */}
                 <div className="text-[#757575] text-sm space-y-2 text-center sm:text-left">
                   <p className="text-[#111111] font-medium">
-                    Nike Dri-FIT ADV TechKnit Ultra
+                    {product.name}
                   </p>
-                  <p>{"Men's Short-Sleeve Running Top"}</p>
-                  <p>Ashen Slate/Cobalt Bliss</p>
+                  <p>{product.category}</p>
+                  {/* <p>Ashen Slate/Cobalt Bliss</p> */}
                   <div className="flex gap-4 justify-center sm:justify-start text-sm">
-                    <p>Size L</p>
-                    <p>Quantity 1</p>
+                    {/* <p>Size L</p> */}
+                    <p>{product.quantity}</p>
                   </div>
                   <div className="flex gap-4 justify-center sm:justify-start text-xl text-black">
                     <IoHeartOutline />
@@ -56,41 +78,11 @@ const Cart = () => {
                 </div>
                 {/* Product Price */}
                 <p className="text-sm text-[#111111] font-medium mt-4 sm:mt-0 sm:text-right text-center">
-                  MRP: ₹ 3,895.00
+                  MRP: ₹ {product.price}
                 </p>
               </div>
             </div>
-
-            {/* Product 2 */}
-            <div className="flex flex-col items-center sm:items-start sm:flex-row gap-6">
-              <Image
-                src={`/Images/products/nike-air-max-97.png`}
-                alt={"Nike Air Max 97"}
-                width={150}
-                height={150}
-                className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] mx-auto sm:mx-0"
-              />
-              <div className="flex flex-col sm:flex-row justify-between w-full">
-                {/* Product Details */}
-                <div className="text-[#757575] text-sm space-y-2 text-center sm:text-left">
-                  <p className="text-[#111111] font-medium">Nike Air Max 97 SE</p>
-                  <p>{"Men's Shoes"}</p>
-                  <p>Flat Pewter/Light Bone/Black/White</p>
-                  <div className="flex gap-4 justify-center sm:justify-start text-sm">
-                    <p>Size 8</p>
-                    <p>Quantity 1</p>
-                  </div>
-                  <div className="flex gap-4 justify-center sm:justify-start text-xl text-black">
-                    <IoHeartOutline />
-                    <HiOutlineTrash />
-                  </div>
-                </div>
-                {/* Product Price */}
-                <p className="text-sm text-[#111111] font-medium mt-4 sm:mt-0 sm:text-right text-center">
-                  MRP: ₹ 16,995.00
-                </p>
-              </div>
-            </div>
+            )):<p>First Choose product for order</p>}
           </div>
         </div>
 
@@ -102,15 +94,15 @@ const Cart = () => {
           <div className="space-y-4 text-center sm:text-left">
             <div className="flex justify-between text-sm">
               <p>Subtotal</p>
-              <p>₹ 20,890.00</p>
+              <p>₹ {OrderSummary.subTotals}</p>
             </div>
             <div className="flex justify-between text-sm">
               <p>Delivery/Shipping</p>
-              <p>Free</p>
+              <p>₹ {OrderSummary.deliveryFee}</p>
             </div>
             <div className="flex justify-between text-sm font-medium">
               <p>Total</p>
-              <p>₹ 20,890.00</p>
+              <p>₹ {OrderSummary.grandTotal}</p>
             </div>
           </div>
          <Link href={"/checkout"}><button className="py-[10px] w-full mt-8 bg-[#111111] rounded-[30px] text-center text-white">Member Checkout</button></Link>
