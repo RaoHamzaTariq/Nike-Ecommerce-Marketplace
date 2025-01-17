@@ -4,6 +4,7 @@ import { Product } from '@/data/interfaces';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
+import Link from 'next/link';
 
 const BestOfAirMax = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -117,27 +118,26 @@ const BestOfAirMax = () => {
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product: Product) => (
-            <div
-              key={product.id}
+           <Link href={`/products/${product.slug.current}`} key={product.id} > <div
               className="flex flex-col gap-5 min-w-[280px] max-w-[320px] sm:min-w-[350px] sm:max-w-[400px] md:min-w-[400px] md:max-w-[450px] lg:min-w-[450px] lg:max-w-[500px]"
 
             >
               <div>
                 <Image
-                  src={product.mainImage ? urlFor(product.mainImage).url() : '/default-image.png'}
-                  alt={`${product.name} Image`}
+                  src={product.image ? urlFor(product.image).url() : '/default-image.png'}
+                  alt={`${product.productName} Image`}
                   width={442}
                   height={442}
                 />
               </div>
               <div className="flex justify-between">
                 <div className="text-base">
-                  <h3 className="font-medium">{product.name}</h3>
+                  <h3 className="font-medium">{product.productName}</h3>
                   <h4 className="max-w-[220px]">{product.category}</h4>
                 </div>
                 <p className="font-medium">₹{product.price}</p>
               </div>
-            </div>
+            </div></Link>
           ))
         ) : (
           <p>Products not found</p>

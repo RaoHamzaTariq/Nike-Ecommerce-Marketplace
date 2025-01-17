@@ -1,8 +1,14 @@
+'use client'
 import React from 'react'
 import { TbTruckDelivery } from 'react-icons/tb'
 import Image from 'next/image'
+import { useCart } from '@/components/context/CartContext';
+import { CartProducts } from '@/data/interfaces';
+import { urlFor } from '@/sanity/lib/image';
 
 const CheckOut = () => {
+  const {cart} = useCart();
+  
   return (
     <div className='w-full font-inter flex justify-center mt-10 items-center'>
     <div className='max-w-[880px] lg:gap-[120px] md:gap-[70px] sm:gap-[35px] sm:flex-row flex-col mb-24 mx-5 flex items-start'>
@@ -163,36 +169,30 @@ const CheckOut = () => {
             <p className="text-xs text-[#111111]">(The total reflects the price of your order, including all duties and taxes)
       </p>
       <div className='flex flex-col items-center sm:items-start mt-5 gap-3'>
-        <p className='text-base font-bold'>{"Arrives Mon, 27 Mar - Wed, 12 Apr"}</p>
-        <div className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
+        <p className='text-base font-bold'>{"Order Now For UpTo 40% Off"}</p>
+        {
+          cart.length>0 ? cart.map((product:CartProducts)=>(
+            <div key={product.slug} className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
         <Image
-        src={`/Images/check-out/nike-dri-fit.png`}
+         src={
+                                            product.image
+                                              ? urlFor(product.image).url()
+                                              : "/default-image.png"
+                                          } 
         alt={"Logo Image"}
         width={208}
         height={208}
       />
       <div className='text-sm text-[#8d8d8d]'>
         <p className='text-[#111111] max-w-[200px] sm:max-w-[320px]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
-        <p>Qty 1</p>
-        <p>Size L</p>
-        <p>{"₹ 3 895.00"}</p>
+        <p>{product.quantity}</p>
+        <p>{`₹ ${product.price}`}</p>
       </div>
         </div>
+          )): <p className="text-lg font-mono text-red-600">First Choose product for order</p>   }
+        
       
-        <div className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
-        <Image
-        src={`/Images/check-out/nike-air-max.png`}
-        alt={"Logo Image"}
-        width={208}
-        height={208}
-      />
-      <div className='text-sm text-[#8d8d8d]'>
-        <p className='text-[#111111]'>{"Nike Air Max 97 SE Men's Shoes"}</p>
-        <p>Qty 1</p>
-        <p>Size UK 8</p>
-        <p>{"₹ 16 995.00"}</p>
-      </div>
-        </div>
+        
         </div>
       </div>
         </div>

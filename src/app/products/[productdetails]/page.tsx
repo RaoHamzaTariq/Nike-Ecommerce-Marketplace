@@ -13,7 +13,7 @@ const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); 
   const [quantity, setQuantity] = useState<number>(1)
-  const { addToCart,cart } = useCart();
+  const { addToCart } = useCart();
 
   useEffect(()=>{
     const fetchData = async() =>{
@@ -50,17 +50,16 @@ const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
   const handleAddToCart = (product: Product) => {
 
     addToCart({
-      id: product.id,
-      name: product.name,
+      // id: product.id,
+      productName: product.productName,
       price: product.price,
-      image: product.mainImage,
+      image: product.image,
       quantity: quantity,
       category: product.category,
       subTotal: parseFloat((product.price * quantity).toFixed(0)),
       color: product.colors,
       slug: product.slug.current
     });
-    console.log(cart)
   };
   
     
@@ -96,18 +95,18 @@ const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
     <div className='flex flex-col md:flex-row lg:gap-[137] md:gap-10 gap-16 justify-between xl:mx-40 lg:mx-32 md:mx-20 mx-10 lg:my-32 md:my-24 sm:my-16 my-10'>
       {/* Dynamic image rendering */}
       <Image src={
-                    productData.mainImage
-                      ? urlFor(productData.mainImage).url()
+                    productData.image
+                      ? urlFor(productData.image).url()
                       : "/default-image.png"
-                  } alt={productData.name} className='md:basis-[60%]'  width={653} height={653} />
+                  } alt={productData.productName} className='md:basis-[60%]'  width={653} height={653} />
       
       <div className='font-poppins md:basis-[40%] flex flex-col items-center md:items-start gap-7'>
         <h1 className='max-w-[367px] leading-[48px] text-4xl sm:text-5xl font-medium md:text-left text-center'>
-          {productData.name}
+          {productData.productName}
         </h1>
-        <p className='text-base md:text-left text-center'>{productData.shortDesc}</p>
+        <p className='text-base md:text-left text-center'>{productData.description}</p>
         <h3 className='text-4xl font-medium md:text-left text-center'>{`₹ ${productData.price}.00`}</h3>
-        <div className='flex justify-center items-center gap-3 sm:gap-5 md:gap-7 lg:gap-10'>
+        <div className='flex justify-center items-center md:mt-4 gap-3 sm:gap-5 md:gap-7 lg:gap-10'>
         <Link href={'/cart'}><button onClick={()=>{handleAddToCart(productData)}} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
           <TbShoppingCart /> Add to Cart
         </button></Link>
@@ -116,9 +115,13 @@ const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
                       if (quantity > 1) {
                         setQuantity((prev) => prev - 1);
                       }
-                    }} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>{"-"}</button>
+                    }} className={` ${quantity<=1? "bg-gray-600" : "bg-[#111111]"} -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center`}>{"-"}</button>
         <h4 className='flex justify-center items-center text-center text-base font-medium '>{quantity}</h4> 
-        <button onClick={()=>{setQuantity((prev)=>prev+1)}} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>{"+"}</button>
+        <button onClick={() => {
+                      if (quantity < productData.inventory) {
+                        setQuantity((prev) => prev + 1);
+                      }
+                    }}  className={` ${productData.inventory<=quantity? "bg-gray-600" : "bg-[#111111]"} -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center`}>{"+"}</button>
         </div>
         </div>
         

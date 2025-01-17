@@ -2,7 +2,6 @@ import React from 'react'
 import ProductCard from '../../components/product-card'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { BsFilter } from 'react-icons/bs'
-// import { Product,  } from '@/data/data'
 import { Product } from '@/data/interfaces'
 import Link from 'next/link'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -129,7 +128,7 @@ const Products = async () => {
         <div className='flex flex-col justify-center items-center'>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mx-5 sm:mx-0'>
       {fetchedData ? fetchedData.map((product:Product)=>(
-        <Link key={product.slug?.current} href={`/products/${product.slug?.current}`}><ProductCard name={product.name} tag={product.status} image={product.mainImage} price={product.price} color={product.colors} category={product.category}/></Link>
+        <Link key={product.slug?.current} href={`/products/${product.slug?.current}`}><ProductCard name={product.productName} tag={product.status} image={product.image} price={product.price} color={product.colors.length} category={product.category}/></Link>
       )):(
         <p>Products not found</p>
       )}

@@ -3,22 +3,16 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export interface Product {
     id: string;
-    name: string;
+    productName: string;
     price: number;
-    stock: number;
+    inventory: number;
     category: string;
-    colors: number;
+    colors: string[];
     status: string;
     createdAt: Date;
     updatedAt: Date;
-    mainImage: {
-        alt: string;
-        asset: {
-            ref: string;
-            type: string;
-        };
-    };
-    shortDesc: string;
+    image: SanityImageSource;
+    description: string;
     slug: {
         current: string;
         type: string;
@@ -42,11 +36,11 @@ export interface User {
   
 
   export interface CartProducts {
-    id: string;
+    // id: string;
     quantity: number;
     price: number;
-    name: string;
-    color:number
+    productName: string;
+    color:string[]
     image: SanityImageSource;
     category: string;
     subTotal:number,

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { HiOutlineTrash } from "react-icons/hi";
 import { IoHeartOutline } from "react-icons/io5";
@@ -10,17 +10,16 @@ import { urlFor } from "@/sanity/lib/image";
 
 
 const Cart = () => {
-  const {cart} = useCart();
+  const {cart,removeFromCart} = useCart();
   const subTotals = cart.reduce((accumulator, item) : number => {
     return accumulator + (item.subTotal || 0);
   }, 0)
   const discountPercentage : number = 5
-  console.log(cart)
 
   const OrderSummary = {
     subTotals: subTotals.toFixed(2),
     discount : (subTotals * (discountPercentage/100)).toFixed(2),
-    deliveryFee : 3,
+    deliveryFee :subTotals>14000 ? 0 : 5 ,
     grandTotal : ((subTotals - (subTotals*(discountPercentage/100))) + 3).toFixed(2)
   }
   return (
@@ -54,7 +53,7 @@ const Cart = () => {
                                       ? urlFor(product.image).url()
                                       : "/default-image.png"
                                   } 
-                alt={product.name}
+                alt={product.productName}
                 width={150}
                 height={150}
                 className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] mx-auto sm:mx-0"
@@ -63,7 +62,7 @@ const Cart = () => {
                 {/* Product Details */}
                 <div className="text-[#757575] text-sm space-y-2 text-center sm:text-left">
                   <p className="text-[#111111] font-medium">
-                    {product.name}
+                    {product.productName}
                   </p>
                   <p>{product.category}</p>
                   {/* <p>Ashen Slate/Cobalt Bliss</p> */}
@@ -73,7 +72,7 @@ const Cart = () => {
                   </div>
                   <div className="flex gap-4 justify-center sm:justify-start text-xl text-black">
                     <IoHeartOutline />
-                    <HiOutlineTrash />
+                    <HiOutlineTrash onClick={()=>{removeFromCart(product.slug)}}/>
                   </div>
                 </div>
                 {/* Product Price */}
@@ -82,7 +81,7 @@ const Cart = () => {
                 </p>
               </div>
             </div>
-            )):<p>First Choose product for order</p>}
+            )):<p className="text-lg font-mono text-red-600">First Choose product for order</p>}
           </div>
         </div>
 
@@ -99,6 +98,10 @@ const Cart = () => {
             <div className="flex justify-between text-sm">
               <p>Delivery/Shipping</p>
               <p>₹ {OrderSummary.deliveryFee}</p>
+            </div>
+            <div className="flex justify-between text-sm">
+              <p>Discount</p>
+              <p>₹ {OrderSummary.discount}</p>
             </div>
             <div className="flex justify-between text-sm font-medium">
               <p>Total</p>

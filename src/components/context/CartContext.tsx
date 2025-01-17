@@ -29,7 +29,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addToCart = (item: CartProducts) => {
     console.log("Item to be added:", item);
 
-    if (!item || !item.name || !item.price) {
+    if (!item.productName || !item.price) {
       console.error("Invalid item added to cart:", item);
       return;
     }
@@ -39,8 +39,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     console.log("Cart after addition:", [...cart, item]);
   };
 
-  const removeFromCart = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  const removeFromCart = (slug: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.slug !== slug));
   };
 
   const clearCart = () => {

@@ -8,37 +8,36 @@ export const productType = defineType({
   icon: DocumentTextIcon,
   fields: [
     defineField({
-      name:"name",
-      title: 'Name',
+      name:"productName",
+      title: 'Product Name',
       type: 'string',
     }),
     defineField({
       name: 'category',
+      title: 'Category',
       type: 'string',
     }),
     defineField({
-        name: 'shortDesc',
-        type: 'string',
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+    }),
+      defineField({
+        name: 'inventory',
+      title: 'Inventory',
+      type: 'number',
       }),
-    defineField({
+      defineField({
         name: 'colors',
-        title: 'Colors',
-        type: 'number',
+      title: 'Colors',
+      type: 'array',
+      of: [{ type: 'string' }],
       }),
+
       defineField({
-        name: 'stock',
-        title: 'Stocks',
-        type: 'number',
-      }),
-      defineField({
-        name: 'rating',
-        title: 'Rating',
-        type: 'number',
-      }),
-      defineField({
-        name: 'price',
-        title: 'Price',
-        type: 'number',
+        name: 'description',
+        title: 'Description',
+        type: 'text',
       }),
       defineField({
         name: 'status',
@@ -49,51 +48,18 @@ export const productType = defineType({
       name: 'slug',
       type: 'slug',
       options: {
-        source: 'name',
+        source: 'productName',
       },
     }),
-    // defineField({
-    //   name: 'author',
-    //   type: 'reference',
-    //   to: {type: 'author'},
-    // }),
     defineField({
-      name: 'mainImage',
-      type: 'image',
+      name: 'image',
+      title: 'Image',
+      type: 'image', // Using Sanity's image type for image field
       options: {
         hotspot: true,
       },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        }
-      ]
     }),
-    // defineField({
-    //   name: 'categories',
-    //   type: 'array',
-    //   of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
-    // }),
-    // defineField({
-    //   name: 'publishedAt',
-    //   type: 'datetime',
-    // }),
-    // defineField({
-    //   name: 'body',
-    //   type: 'blockContent',
-    // }),
+   
   ],
-//   preview: {
-//     select: {
-//       title: 'title',
-//       author: 'author.name',
-//       media: 'mainImage',
-//     },
-//     prepare(selection) {
-//       const {author} = selection
-//       return {...selection, subtitle: author && `by ${author}`}
-//     },
-//   },
+
 })
