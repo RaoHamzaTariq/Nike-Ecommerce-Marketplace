@@ -26,7 +26,7 @@ const JoinUs = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [country, setCountry] = useState<"India" | "United States" | "Canada" | "United Kingdom">("India");
+  const [city, setcity] = useState<string>("");
   const [gender, setGender] = useState<"Male" | "Female">("Male");
   const { isLoaded, signUp, setActive} = useSignUp();
   const [pendingVerification, setPendingVerification] = useState(false);
@@ -100,7 +100,7 @@ const JoinUs = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password, firstName, lastName, dateOfBirth, country, gender }),
+            body: JSON.stringify({ email, firstName, lastName, dateOfBirth, city, gender }),
           });
           if (!response.ok) {
             // Handle specific error responses
@@ -192,17 +192,16 @@ const JoinUs = () => {
             Get a Nike Member Reward every year on your Birthday.
           </p>
 
-          {/* Country Selection */}
-          <select
+          {/* city Selection */}
+          <input
+          type='text'
             className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-            value={country}
-            onChange={(e) => setCountry(e.target.value as "India" | "United States" | "Canada" | "United Kingdom")}
+            value={city}
+            placeholder="City"
+            onChange={(e) => setcity(e.target.value)}
+            required
           >
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="Canada">Canada</option>
-            <option value="United Kingdom">United Kingdom</option>
-          </select>
+          </input>
 
           {/* Gender Selection */}
           <div className="flex flex-row gap-4">

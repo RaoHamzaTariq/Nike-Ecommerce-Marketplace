@@ -13,6 +13,7 @@ export interface Product {
     updatedAt: Date;
     image: SanityImageSource;
     description: string;
+    reviews:Comment[]
     slug: {
         current: string;
         type: string;
@@ -44,5 +45,11 @@ export interface User {
     image: SanityImageSource;
     category: string;
     subTotal:number,
-    slug:string
+    slug:string,
+  }
+
+  export interface Comment { 
+    rating: number;             
+    customerName: string;   
+    comment: string;
   }

@@ -1,5 +1,3 @@
-// user.ts
-
 import { defineField, defineType } from 'sanity';
 
 export default defineType({
@@ -7,18 +5,12 @@ export default defineType({
   title: 'User',
   type: 'document',
   fields: [
-    defineField( {
+    defineField({
       name: 'email',
       title: 'Email',
       type: 'string',
       validation: Rule => Rule.required().email(),
     }),
-   defineField({
-    name: 'password',
-    title: 'Password',
-    type: 'string',
-    validation: Rule => Rule.required(),
-  }) ,
     defineField({
       name: 'firstName',
       title: 'First Name',
@@ -35,17 +27,9 @@ export default defineType({
       type: 'date',
     }),
     defineField({
-      name: 'country',
-      title: 'Country',
+      name: 'city',
+      title: 'City',
       type: 'string',
-      options: {
-        list: [
-          { title: 'India', value: 'India' },
-          { title: 'United States', value: 'United States' },
-          { title: 'United Kingdom', value: 'United Kingdom' },
-          { title: 'Canada', value: 'Canada' },
-        ],
-      },
     }),
     defineField({
       name: 'gender',
@@ -57,6 +41,13 @@ export default defineType({
           { title: 'Female', value: 'Female' },
         ],
       },
+    }),
+    // New field for order history
+    defineField({
+      name: 'orderHistory',
+      title: 'Order History',
+      type: 'array',
+      of: [{ type: 'string' }], // Array of strings to hold order IDs
     }),
   ],
 });

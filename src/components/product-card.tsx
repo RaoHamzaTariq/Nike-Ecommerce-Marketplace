@@ -3,11 +3,14 @@ import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
-const ProductCard = (props:{image:SanityImageSource,name:string,tag:string,category:string,color:number,price:number}) => {
+const ProductCard = (props:{
+  inventory: number,image:SanityImageSource,name:string,status:string,category:string,color:number,price:number
+}) => {
   return (
     
     <div className='flex flex-col gap-5 max-w-[348px]'>
-        <div className=''>
+        <div className='relative'>
+          <p className={`${props.inventory>0?"text-white bg-black":"bg-red-100 text-red-700"} top-3  text-xs rounded-md px-2 py-1 left-3 absolute`}>{props.inventory>0 ? "In Stock" : "Sold Out"}</p>
       <Image src={
                       props.image
                         ? urlFor( props.image).url()
@@ -16,7 +19,7 @@ const ProductCard = (props:{image:SanityImageSource,name:string,tag:string,categ
         </div>
         <div className='flex flex-col justify-between gap-3'>
                 <ul className=' font-medium text-base'>
-                    <p className='text-[#9E3500]'>{props.tag}</p>
+                    <p className='text-[#9E3500]'>{props.status}</p>
                     <p className='text-[#111111]'>{props.name}</p>
                     <p className='text-[#757575] font-normal'>{props.category}</p>
                 </ul>

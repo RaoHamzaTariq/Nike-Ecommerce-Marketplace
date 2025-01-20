@@ -3,10 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body{
-    @apply min-h-[546px] sm:min-h-[100vh] w-[100vw]  overflow-x-hidden
-  } */
-
 *{
     @apply font-helvetica
 }

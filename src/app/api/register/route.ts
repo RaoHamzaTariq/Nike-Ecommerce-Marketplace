@@ -1,15 +1,14 @@
-import { hash } from 'bcryptjs';
 import { client } from '@/sanity/lib/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
  
-  const { email, password, firstName, lastName, dateOfBirth, country, gender } = data;
+  const { email, firstName, lastName, dateOfBirth, country, gender } = data;
 
   try {
     // Validate user input (e.g., email format, password strength)
-    if (!email || !password || !firstName || !lastName) {
+    if (!email || !firstName || !lastName) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
@@ -20,14 +19,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Email already in use' }, { status: 409 }); // Conflict status
     }
 
-    // Hash the password
-    const hashedPassword = await hash(password, 10); // 10 is the salt rounds
 
     // Create a new user document in Sanity
     const newUser = await client.create({
       _type: 'user',
       email,
-      password: hashedPassword,
       firstName,
       lastName,
       dateOfBirth,

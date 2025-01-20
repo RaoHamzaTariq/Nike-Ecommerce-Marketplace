@@ -1,13 +1,13 @@
-'use client';
-import { UserProfile } from '@clerk/nextjs';
+'use client'
 import React from 'react'
+import { UserProfile } from '@clerk/nextjs'
 
-const Profile = () => {
+const UserProfilePage = () => {
   return (
-    <div className='flex w-full justify-center items-center py-5 sm:py-10'>
-        <UserProfile/>
+    <div className='flex justify-center lg:my-7 sm:my-5 my-3'>
+    <UserProfile />
     </div>
   )
 }
 
-export default Profile
+export default UserProfilePage
