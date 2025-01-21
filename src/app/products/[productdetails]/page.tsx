@@ -168,7 +168,7 @@ const averageRating = () => {
           
           {/* Display individual reviews */}
           <div className="mt-4">
-            {productData.reviews.length > 0 ? (
+            {productData.reviews ? (
               productData.reviews.map((review) => (
                 <div key={review.customerName} className="border-b py-2">
                   <strong>{review.customerName}:</strong> 
