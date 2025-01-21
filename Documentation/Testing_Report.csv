@@ -1,0 +1,19 @@
+Test Case ID,Test Case Description,Test Steps,Expected Result,Actual Result,Status,Severity Level,Remarks
+TC001,Check Product Listing Page,Open Page > Product listing appear > apply filter and pagination,Products displayed correctly,Products displayed correctly,Passed,Low,No issues found
+TC002,Test API error handling,Disconnect API > Refresh page,Show fallback UI with error message,Error message shown,Passed,Medium,Handled gracefully
+TC003,Check cart functionality,Add product to cart > Verify cart contents,Cart updates with added product,Cart updates as expected,Passed,High,Works as expected
+TC004,Ensure responsiveness on mobile,Resize browser window > Check layout,Layout adjusts properly to screen size,Responsive layout working as intended,Passed,Medium,Test successful
+TC005,Test search bar functionality,Search product by name > Validate results,Search results display correctly,Search results display correctly but search bar not shown clearly,Passed,Low,Search works as intended
+TC006,Verify product detail page routing,Click on product > Verify detail page loads,Product details load as expected,Product details load as expected,Passed,High,Routing validated
+TC007,Test category filter functionality,Select category > Validate filtered results,Filtered results match selected category,Filtered results match selected category but few filters aren't working,Passed,Medium,Filter applied successfully
+TC008,Check pagination for large product lists,Navigate pages > Validate items per page,Pagination works with correct items per page,Pagination works with correct items per page,Passed,Medium,Pagination functional
+TC009,Verify related products display,View product detail > Validate related products,Related products load dynamically,Related products load dynamically,Passed,Low,Related products displayed
+TC010,Ensure user profile loads correctly,Login > Open profile page,User profile displays correct information,User profile displays correct information,Passed,Medium,User profile loads correctly
+TC011,Test wishlist functionality,Add to wishlist > Verify persistence,Wishlist shows saved products,Wishlist shows saved products,Passed,Low,Wishlist updates correctly
+TC012,Test social media sharing links,Share product on social media > Verify links,Social media links work,Social media links work,Passed,Low,Sharing links verified
+TC013,Test Login Features,Enter login credentials > Redirect to home page,Login user successfully,Login user successfully,Passed,Low,Login successful
+TC014,Ensure Review and Rating section for each product,Enter comment details > Comment successfully rendered on that product,Feedback submission is successful,Feedback submission is successful,Passed,Low,Feedback form functional
+TC015,Test Join Us: Email Verification and Data Storage,Enter details > Send email > Enter OTP > Store in CMS,User details stored successfully after verification,User details stored successfully,Passed,Medium,Join Us process functional
+,,,,,,,
+,,,,,,,
+,,,,,,,

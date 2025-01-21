@@ -71,12 +71,16 @@ import { toast } from 'sonner';
       
   
 // Calculate average rating
-  const averageRating = () => {
-    if (productData?.reviews.length === 0){ return 0;}
-    return (
-      productData?.reviews?.reduce((acc, review) => acc + review.rating, 0) / productData?.reviews?.length
-    ).toFixed(1);
-  };
+const averageRating = () => {
+  if (!productData || !productData.reviews || productData.reviews.length === 0) {
+    return 0;
+  }
+  return (
+    (productData.reviews.reduce((acc, review) => acc + review.rating, 0) / productData.reviews.length)
+      .toFixed(1)
+  );
+};
+
 
     
     if (error) {
