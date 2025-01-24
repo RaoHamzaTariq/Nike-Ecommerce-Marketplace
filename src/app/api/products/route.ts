@@ -12,7 +12,12 @@
       }
       if(query=="name"){
         const data = await client.fetch(`*[_type == "product"]{productName,slug}`);
-      
+      return NextResponse.json({ data }, { status: 200 });
+      }
+      if(query=="category"){
+        let data = await client.fetch(`*[_type == "product"]{category}`);
+        data = data.map((product: { category: string; })=>product.category)
+        data = Array.from(new Set(data))
       return NextResponse.json({ data }, { status: 200 });
       }
     const data = await client.fetch(`*[_type == "product"]`);

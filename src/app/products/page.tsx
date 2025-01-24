@@ -10,62 +10,101 @@ import Pagination from 'react-paginate';
 
 
 const Products =  () => {
-
-  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]); // Store all products
+  const [products, setProducts] = useState<Product[]>([]); // Store filtered products
+  const [categories, setCategories] = useState<string[]>([]); // Store categories
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
- 
+  const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number] | null>(null);
+
   const [currentPage, setCurrentPage] = useState(0);
-const [productsPerPage] = useState(12); // Adjust as needed
-const [totalProducts, setTotalProducts] = useState(0);
-  
-  useEffect(()=>{
+  const [productsPerPage] = useState(12);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
-        if (!response) {
+        const categoryResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?query=category`);
+
+        if (!response.ok || !categoryResponse.ok) {
           throw new Error('Failed to fetch data');
         }
+
         const data = await response.json();
-        setProducts(data.data)
-        setTotalProducts(data.data.length);
+        const categoryData = await categoryResponse.json();
+
+        setAllProducts(data.data); // Store all products
+        setProducts(data.data); // Initialize filtered products
+        setCategories(Array.from(new Set(categoryData.data)));   // Ensure unique categories
       } catch (error) {
         console.error(error);
-        return [];
       }
     };
-    
-    fetchData();
-  },[])
 
-  const pagesCount = Math.ceil(totalProducts / productsPerPage);
-  const handlePageChange = (data: { selected: React.SetStateAction<number>; }) => {
+    fetchData();
+  }, []);
+
+  const pagesCount = Math.ceil(products.length / productsPerPage);
+  const handlePageChange = (data: { selected: React.SetStateAction<number> }) => {
     setCurrentPage(data.selected);
   };
+
   const slicedProducts = products.slice(
     currentPage * productsPerPage,
     (currentPage + 1) * productsPerPage
   );
-  
 
-  // Filter products based on selected categories
   useEffect(() => {
-    if (selectedCategories.length === 0) {
-      setProducts(products);
-    } else {
-      const filtered = products.filter((product) =>
+    let filteredProducts = allProducts;
+
+    // Filter by category
+    if (selectedCategories.length > 0) {
+      filteredProducts = filteredProducts.filter((product) =>
         selectedCategories.includes(product.category)
       );
-      setProducts(filtered);
     }
-  }, [selectedCategories, products]);
+
+    // Filter by gender
+    if (selectedGenders.length > 0) {
+      filteredProducts = filteredProducts.filter((product) =>
+        selectedGenders.includes(product.category.slice(0,5)) // Assuming `gender` field exists in the product object
+      );
+    }
+
+    // Filter by price range
+    if (selectedPriceRange) {
+      const [minPrice, maxPrice] = selectedPriceRange;
+      filteredProducts = filteredProducts.filter((product) => {
+        const productPrice = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
+        return productPrice >= minPrice && productPrice <= maxPrice;
+      });
+    }
+
+
+    setProducts(filteredProducts);
+    setCurrentPage(0); // Reset to the first page after filtering
+  }, [selectedCategories, selectedGenders, selectedPriceRange, allProducts]);
+
 
   // Toggle category selection
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
-        ? prev.filter((cat) => cat !== category)
-        : [...prev, category]
+        ? prev.filter((cat) => cat !== category) // Remove category
+        : [...prev, category] // Add category
     );
+  };
+
+  const toggleGender = (gender: string) => {
+    setSelectedGenders((prev) =>
+      prev.includes(gender)
+        ? prev.filter((gen) => gen !== gender) // Remove gender
+        : [...prev, gender] // Add gender
+    );
+  };
+
+  const handlePriceRangeSelection = (range: [number, number]) => {
+    setSelectedPriceRange(range);
   };
 
   return (
@@ -73,14 +112,7 @@ const [totalProducts, setTotalProducts] = useState(0);
       <div className="flex justify-between">
         <h1 className="text-2xl font-medium">News ({products.length})</h1>
        <div className="flex gap-3 sm:gap-6 md:gap-7 items-baseline mb-5 justify-between">
-  <Pagination
-    pageCount={pagesCount}
-    initialPage={currentPage}
-    onPageChange={handlePageChange}
-    containerClassName="pagination flex items-center justify-center mt-10 gap-2"
-    activeClassName="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full"
-    disabledClassName="opacity-50 cursor-default"
-  />
+  
   
     <p className="text-base flex items-center gap-1">
       Filters <BsFilter />
@@ -99,90 +131,58 @@ const [totalProducts, setTotalProducts] = useState(0);
       <div className="flex gap-10">
         <div className="hidden sm:!flex flex-col gap-10 max-w-[260px] w-[260px]">
           <ul className="flex flex-col gap-4 text-base font-medium">
-            {[
-              'Shoes',
-              'Sports Bras',
-              'Tops & T-Shirts',
-              'Hoodies & Sweatshirts',
-              'Jackets',
-              'Trousers & Tights',
-              'Shorts',
-              'Tracksuits',
-              'Jumpsuits & Rompers',
-              'Skirts & Dresses',
-              'Socks',
-              'Accessories & Equipment',
-            ].map((category) => (
-              <li key={category}>
-                <label className='flex gap-2'>
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => toggleCategory(category)}
-                  />
-                  {category}
-                </label>
-              </li>
-            ))}
+          {categories.length > 0 ? (
+              categories.map((category) => (
+                <li key={category}>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => toggleCategory(category)}
+                    />
+                    {category}
+                  </label>
+                </li>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
           </ul>
           <div className='flex flex-col gap-9'>
     <div className=' flex flex-col gap-3 w-full'>
         <h4 className='text-base font-medium flex justify-between items-center w-full'>Gender  <IoIosArrowUp /></h4>
         <div className='flex flex-col gap-1'>
-        <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          Men
-        </p>
-      </div>
-      <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          Women
-        </p>
-      </div>
-      <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          Unisex
-        </p>
-      </div>
+       {["Men's", 'Women'].map((gender) => (
+              <label key={gender} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={selectedGenders.includes(gender)}
+                  onChange={() => toggleGender(gender)}
+                />
+                {gender}
+              </label>
+            ))}
         </div>
     </div>
-    <div className=' flex flex-col gap-3 w-full'>
-        <h4 className='text-base font-medium flex justify-between items-center w-full'>Kids<IoIosArrowUp /></h4>
-        <div className='flex flex-col gap-1'>
-        <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          Boys
-        </p>
-      </div>
-      <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          Girls
-        </p>
-      </div>
-        </div>
-    </div>
-    <div className=' flex flex-col gap-3 w-full'>
-        <h4 className='text-base font-medium flex justify-between items-center w-full'>Shop By Price  <IoIosArrowUp /></h4>
-        <div className='flex flex-col gap-1'>
-        <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          {"Under ₹ 2 500.00"}
-        </p>
-      </div>
-      <div className="flex items-center text-base gap-2 ">
-        <input type="checkbox" />
-        <p>
-          {"₹ 2 501.00 - ₹ 7 500.00"}
-        </p>
-      </div>
-        </div>
-    </div>
+    {/* Price Filter */}
+    <div className="flex flex-col gap-4 mt-8">
+            <h3 className="text-lg font-medium">Shop by Price</h3>
+            {[
+              [0, 2500],
+              [2501, 7500],
+              [7501, 15000],
+              [15001, Infinity]
+            ].map(([min, max], index) => (
+              <label key={index} className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="priceRange"
+                  onChange={() => handlePriceRangeSelection([min, max])}
+                />
+                {max === Infinity ? `Above ₹${min}` : `₹${min} - ₹${max}`}
+              </label>
+            ))}
+          </div>
 </div>
         </div>
 
@@ -207,11 +207,19 @@ const [totalProducts, setTotalProducts] = useState(0);
     ))}
   </div>
 ) : (
-  <p>Loading</p>
+  <p className=' flex text-red-700 text-xl'>No Product Found</p>
 )}
-        </div>
+        
       </div>
-
+      </div>
+        <Pagination
+    pageCount={pagesCount}
+    initialPage={currentPage}
+    onPageChange={handlePageChange}
+    containerClassName="pagination flex items-center justify-center mt-10 gap-2"
+    activeClassName="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full"
+    disabledClassName="opacity-50 cursor-default"
+  />
       <div className='flex flex-col gap-4 mt-32'>
       <h3 className='text-[19px] font-medium'>Related Categories</h3>
       <ul className='flex flex-wrap gap-2  text-xs mx-5 sm:mx-0'>

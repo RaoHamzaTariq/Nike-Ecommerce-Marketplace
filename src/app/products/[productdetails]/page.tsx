@@ -103,8 +103,8 @@ const averageRating = () => {
     }
 
     return (
-      <div className='flex flex-col gap-10'>
-      <div className='flex flex-col md:flex-row lg:gap-[137] md:gap-10 gap-16 justify-between xl:mx-40 lg:mx-32 md:mx-20 mx-10 lg:my-32 md:my-24 sm:my-16 my-10'>
+      <div className='flex flex-col gap-5'>
+      <div className='flex flex-col md:flex-row lg:gap-[137] md:gap-10 gap-16 justify-between xl:mx-40 lg:mx-32 md:mx-20 mx-10 lg:mt-32 md:mt-24 sm:mt-16 mt-10'>
         
         {/* Dynamic image rendering */}
         <Image src={
@@ -157,7 +157,6 @@ const averageRating = () => {
         </div>
 
 
-        
         </div>
 
         <div className='px-10 flex gap-5 sm:flex-row flex-col'>
