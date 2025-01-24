@@ -38,7 +38,7 @@ const [totalProducts, setTotalProducts] = useState(0);
   },[])
 
   const pagesCount = Math.ceil(totalProducts / productsPerPage);
-  const handlePageChange = (data: any) => {
+  const handlePageChange = (data: { selected: React.SetStateAction<number>; }) => {
     setCurrentPage(data.selected);
   };
   const slicedProducts = products.slice(

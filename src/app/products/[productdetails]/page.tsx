@@ -43,7 +43,7 @@ import { toast } from 'sonner';
         }
       }
       fetchData()
-    },[])
+    },[productdetails])
 
     const handleAddToCart = (product: Product) => {
 
@@ -122,7 +122,7 @@ const averageRating = () => {
           
           <ToggleGroup className='flex gap-5' variant="outline" type="multiple">
             {productData.colors.map((color:string)=>(
-              <ToggleGroupItem value={color} >
+              <ToggleGroupItem key={color} value={color} >
             {color}
               </ToggleGroupItem>
             ))}

@@ -40,7 +40,7 @@ const AddComment = ({ postId }: { postId: string }) => {
     };
     
     loadComments();
-  }, []);
+  }, [postId]);
 
   const {
     register,

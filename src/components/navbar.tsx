@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { IoBagOutline, IoSearch } from "react-icons/io5";
+import { IoBagOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 import Link from "next/link";
 import { useAuth, UserButton } from "@clerk/nextjs";

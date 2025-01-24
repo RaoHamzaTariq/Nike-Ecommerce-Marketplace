@@ -3,7 +3,6 @@
 import React from "react"
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -50,6 +49,15 @@ export default function SearchBar() {
         fetchData()
       },[])
 
+      if(isLoading){
+        return <div className="flex justify-center w-full items-center text-blue-900">Loading...</div>
+      }
+
+      if(error){
+        return <div className="flex justify-center w-full items-center text-blue-900">{error}</div>
+      }
+
+
   return (
     <div className="relative w-full sm:max-w-[250px]">
         <Command className="p-0 bg-[#f5f5f5] rounded-xl">
@@ -57,7 +65,7 @@ export default function SearchBar() {
           <CommandList className="absolute z-10 bg-white w-full mt-2 shadow-lg rounded-md">
           <CommandGroup className={`${open==true ? "block" : "hidden"}`}>
             {productData && productData.map((product) => (
-              <Link href={`/products/${product.slug.current}`}><CommandItem
+              <Link key={product.id} href={`/products/${product.slug.current}`}><CommandItem
               className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                 key={product.productName}
                 onSelect={(currentname) => {
