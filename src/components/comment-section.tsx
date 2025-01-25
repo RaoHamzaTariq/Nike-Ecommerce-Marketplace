@@ -1,120 +1,85 @@
 "use client";
-import { Comment } from "@/data/interfaces";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
-const fetchComments = async () => {
-  try {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-    const response = await fetch(`${API_URL}/api/comments`);
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data!");
-    }
-
-    const data = await response.json();
-
-    if (!data || !data.data || !Array.isArray(data.data)) {
-      throw new Error("Invalid data format");
-    }
-
-    return data.data;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
-const AddComment = ({ postId }: { postId: string }) => {
+const AddComment = ({ productId }: { productId: string }) => {
+  const { isSignedIn, user } = useUser()
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [comments, setComments] = useState<Comment[]>([]);
-  
-  useEffect(() => {
-    const loadComments = async () => {
-      setLoading(true);
-      const data = await fetchComments();
-      const filteredData = data.filter((comment: { post: { _ref: string; }; }) => comment.post?._ref === postId);
-      setComments(filteredData);
-      setLoading(false);
-    };
-    
-    loadComments();
-  }, [postId]);
+  const router = useRouter()
+
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<{ name: string; email: string; comment: string }>();
+  } = useForm<{ rating: number ; comment: string}>();
 
-  const onSubmit = async (data: { name: string; email: string; comment: string }) => {
-    const { name, email, comment } = data;
-
-    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const res = await fetch(`${API_URL}/api/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, comment, postId }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to add comment");
+  const onSubmit = async (data: { rating: number; comment: string }) => {
+    const customerName = user?.fullName
+    const { rating, comment } = data;
+    if(isSignedIn){
+      try {
+        console.log(productId,customerName,comment,rating)
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const res = await fetch(`${API_URL}/api/products?query=reviews`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({customerName, rating, comment, productId }),
+        });
+        
+     
+        if (!res.ok) {
+          throw new Error("Failed to add comment");
+        }
+  
+        reset();
+      } catch (error) {
+        console.error("An error occurred while adding the comment:", error);
+        setError("Failed to submit your comment. Please try again.");
       }
-
-      reset(); // Reset the form after successful submission
-      // Optionally refetch comments or add the new comment to the state
-      const updatedComments = await fetchComments();
-      setComments(updatedComments);
-    } catch (error) {
-      console.error("An error occurred while adding the comment:", error);
-      setError("Failed to submit your comment. Please try again.");
+    }else{
+      setError("You have to be signed in to add a comment");
+      console.log("You have to be signed in to add a comment")
+      router.push("/login")
     }
+   
   };
 
   return (
     <div className="mt-14">
       <p>
-        Leave a comment <span role="img" aria-label="speech bubble">💬</span>
+        Leave a rating and comment{" "}
+        <span role="img" aria-label="star">⭐</span>
       </p>
-      
+
       {error && <p className="text-red-600">{error}</p>}
-      
+
       <form
         className="flex flex-col border dark:border-purple-950 shadow-sm rounded px-8 pt-6 pb-6 mb-10"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          {...register("name", { required: true })}
+        <label htmlFor="rating">Rating (1–5)</label>
+        <select
+          id="rating"
+          {...register("rating", { required: true, valueAsNumber: true })}
           className="mb-4 py-1 bg-amber-100 dark:bg-slate-900"
-        />
-        {errors.name && (
-          <p className="text-red-600 text-xs">Name is required.</p>
+        >
+          <option value="">Select rating</option>
+          {[1, 2, 3, 4, 5].map((num) => (
+            <option key={num} value={num}>
+              {num} Star{num > 1 && "s"}
+            </option>
+          ))}
+        </select>
+        {errors.rating && (
+          <p className="text-red-600 text-xs">Rating is required.</p>
         )}
-
-        <label htmlFor="email">
-          Email{" "}
-          <span className="text-xs">(Your email will not be published!)</span>
-        </label>
-        <input
-          id="email"
-          {...register("email", {
-            required: true,
-            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          })}
-          className="mb-4 py-1 bg-amber-100 dark:bg-slate-900"
-        />
-        {errors.email && (
-          <p className="text-red-600 text-xs">
-            Please enter a valid email address.
-          </p>
-        )}
+        
 
         <label htmlFor="comment">Comment</label>
         <textarea
@@ -123,7 +88,7 @@ const AddComment = ({ postId }: { postId: string }) => {
           className="mb-4 py-1 bg-amber-100 dark:bg-slate-900"
         />
         {errors.comment && (
-          <p className="text-red-600 text-xs">Minimum 2 characters.</p>
+          <p className="text-red-600 text-xs">Minimum 2 characters required.</p>
         )}
 
         <input
@@ -135,19 +100,6 @@ const AddComment = ({ postId }: { postId: string }) => {
           type="submit"
         />
       </form>
-
-      {loading ? (
-        <p>Loading comments...</p>
-      ) : (
-        <div>
-          {comments.map((comment:Comment) => (
-            <div key={comment.customerName} className="border-b mb-2 pb-2 space-y-2">
-              <h4>{comment.customerName}:</h4>
-              <p className="">{comment.comment}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

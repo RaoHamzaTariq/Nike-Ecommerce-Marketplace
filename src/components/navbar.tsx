@@ -79,7 +79,9 @@ const Navbar = () => {
         {/* Search and Icons */}
         <div className="flex gap-3 md:gap-5 items-center">
           <SearchBar />
+          <Link href={"/wishlist"}>
           <CiHeart className="text-2xl cursor-pointer" />
+          </Link>
           <Link href={"/cart"}>
             <IoBagOutline className="text-xl cursor-pointer" />
           </Link>

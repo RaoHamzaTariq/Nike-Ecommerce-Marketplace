@@ -2,7 +2,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 
 export interface Product {
-    id: string;
+    _id: string;
     productName: string;
     price: number;
     inventory: number;
@@ -37,7 +37,7 @@ export interface User {
   
 
   export interface CartProducts {
-    // id: string;
+    id: string;
     quantity: number;
     price: number;
     productName: string;

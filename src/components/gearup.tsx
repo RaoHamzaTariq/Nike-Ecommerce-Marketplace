@@ -102,7 +102,7 @@ const GearUp = () => {
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product: Product) => (
-            <Link href={`/products/${product.slug.current}`} key={product.id}><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
+            <Link href={`/products/${product.slug.current}`} key={product._id}><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
               <div>
                 <Image
                   src={product.image ? urlFor(product.image).url() : '/default-image.png'}
@@ -146,7 +146,7 @@ const GearUp = () => {
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product: Product) => (
-            <Link href={`/products/${product.slug.current}`} key={product.id} ><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
+            <Link href={`/products/${product.slug.current}`} key={product._id} ><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
               <div>
                 <Image
                   src={product.image ? urlFor(product.image).url() : '/default-image.png'}

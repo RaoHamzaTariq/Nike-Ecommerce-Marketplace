@@ -65,7 +65,7 @@ export default function SearchBar() {
           <CommandList className="absolute z-10 bg-white w-full mt-2 shadow-lg rounded-md">
           <CommandGroup className={`${open==true ? "block" : "hidden"}`}>
             {productData && productData.map((product) => (
-              <Link key={product.id} href={`/products/${product.slug.current}`}><CommandItem
+              <Link key={product._id} href={`/products/${product.slug.current}`}><CommandItem
               className="hover:bg-gray-100 p-2 rounded-md cursor-pointer"
                 key={product.productName}
                 onSelect={(currentname) => {

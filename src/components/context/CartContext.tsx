@@ -1,6 +1,6 @@
 "use client";
 import { CartProducts } from "@/data/interfaces";
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import React, { createContext, useContext, useState, ReactNode} from "react";
 
 interface CartContextType {
   cart: CartProducts[];
@@ -22,21 +22,8 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartProducts[]>([]);
 
-  useEffect(() => {
-    console.log("Cart updated:", cart);
-  }, [cart]);
-
   const addToCart = (item: CartProducts) => {
-    console.log("Item to be added:", item);
-
-    if (!item.productName || !item.price) {
-      console.error("Invalid item added to cart:", item);
-      return;
-    }
-
     setCart((prevCart) => [...prevCart, item]);
-
-    console.log("Cart after addition:", [...cart, item]);
   };
 
   const removeFromCart = (slug: string) => {

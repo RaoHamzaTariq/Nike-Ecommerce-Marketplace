@@ -21,15 +21,13 @@ import { toast } from 'sonner';
     useEffect(()=>{
       const fetchData = async() =>{
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?slug=${productdetails}`,{
-            cache:'no-cache',
-            
-          })
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?slug=${productdetails}`)
           if (!response.ok) {
             throw new Error(`Failed to fetch data: ${response.status}`); 
           }
           const data = await response.json()
           setProductData(data.data);
+          
         } catch (error: unknown) { 
           
           if (error instanceof Error) { 
@@ -48,7 +46,7 @@ import { toast } from 'sonner';
     const handleAddToCart = (product: Product) => {
 
       addToCart({
-        // id: product.id,
+        id: product._id,
         productName: product.productName,
         price: product.price,
         image: product.image,
@@ -59,6 +57,7 @@ import { toast } from 'sonner';
         slug: product.slug.current
       });
     };
+    
     
       
     if (isLoading) {
@@ -159,7 +158,7 @@ const averageRating = () => {
 
         </div>
 
-        <div className='px-10 flex gap-5 sm:flex-row flex-col'>
+        <div className='px-10 flex gap-5 mt-10 sm:flex-row flex-col'>
           <div className='flex sm:basis-[60%] flex-col gap-3'>
                {/* Reviews Section */}
         <div className="mt-10 w-full">
@@ -182,8 +181,10 @@ const averageRating = () => {
           </div>
           </div>
           <div className='sm:basis-[40%]'>
-
-          <CommentForm  postId={productData.productName} /> 
+          {
+            productData._id && <CommentForm  productId={productData._id} /> 
+          }
+          
           </div>
         </div>
       </div>

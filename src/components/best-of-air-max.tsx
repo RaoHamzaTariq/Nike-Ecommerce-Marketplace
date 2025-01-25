@@ -118,7 +118,7 @@ const BestOfAirMax = () => {
           <p>Loading products...</p>
         ) : products.length > 0 ? (
           products.map((product: Product) => (
-           <Link href={`/products/${product.slug.current}`} key={product.id} > <div
+           <Link href={`/products/${product.slug.current}`} key={product._id} > <div
               className="flex flex-col gap-5 min-w-[280px] max-w-[320px] sm:min-w-[350px] sm:max-w-[400px] md:min-w-[400px] md:max-w-[450px] lg:min-w-[450px] lg:max-w-[500px]"
 
             >
