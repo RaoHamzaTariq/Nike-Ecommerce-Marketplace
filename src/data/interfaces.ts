@@ -21,18 +21,14 @@ export interface Product {
 }
 
 export interface User {
-    _updatedAt: string;
     firstName: string;
-    password: string;
     gender: 'Male' | 'Female';
-    _createdAt: string;
-    _type: 'user';
     dateOfBirth: string;
     _id: string;
     email: string;
     country: string;
     lastName: string;
-    _rev: string;
+    wishList:string[]
   }
   
 

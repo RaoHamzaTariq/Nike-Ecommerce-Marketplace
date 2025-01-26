@@ -5,6 +5,7 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
  
   const { email, firstName, lastName, dateOfBirth, country, gender } = data;
+ 
 
   try {
     // Validate user input (e.g., email format, password strength)
@@ -42,13 +43,72 @@ export async function POST(req: NextRequest) {
 
 
 
-export async function GET() {
+export async function GET(req:NextRequest) {
+
+  const searchParams = req.nextUrl.searchParams;
+  const email = searchParams.get('email');
+
+  if(email){
+    try {
+      const data = await client.fetch(`*[_type == "user" && email == "${email}"][0]`);
+      
+      return NextResponse.json({ data }, { status: 200 });
+    } catch (error) {
+      console.error('Error fetching user:', error); // Log the error for debugging
+      return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 }); // Return specific error message
+    }
+  }
+
   try {
     const data = await client.fetch(`*[_type == "user"]`);
     
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching posts:', error); // Log the error for debugging
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 }); // Return specific error message
+    console.error('Error fetching user:', error); // Log the error for debugging
+    return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 }); // Return specific error message
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const { productId, userId  } = await req.json();
+
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const query = searchParams.get('query');
+
+    // Validate input
+    if (!productId || !userId) {
+      return NextResponse.json({ 
+        error: 'Missing required fields' 
+      }, { status: 400 });
+    }
+
+    if (query == "wishlist") {
+      try {
+        const data = await client.patch(userId)
+          .setIfMissing({ wishList: [] })
+          .append('wishList', [{
+            productId
+          }])
+          .commit({ autoGenerateArrayKeys: true });
+          
+        return NextResponse.json({ message:"Sucessfully added product to WishList",data }, { status: 200 });
+      } catch (patchError) {
+        console.error('Sanity Patch Error:', patchError);
+        return NextResponse.json({ 
+          error: 'Failed to add product',
+        }, { status: 500 });
+      }
+    }
+    
+    return NextResponse.json({ 
+      error: 'Invalid query parameter' 
+    }, { status: 400 });
+    
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    return NextResponse.json({ 
+      error: 'Unexpected server error',
+    }, { status: 500 });
   }
 }

@@ -3,12 +3,15 @@
   import CommentForm from "@/components/comment-section";
   import Image from 'next/image';
   import { TbShoppingCart } from 'react-icons/tb';
+  import { CiHeart } from "react-icons/ci";
   import Link from 'next/link';
   import { Product } from '@/data/interfaces';
   import { urlFor } from '@/sanity/lib/image';
   import { useCart } from '@/components/context/CartContext';
   import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { toast } from 'sonner';
+import { addToWhishlist } from '@/components/Functions/whishlist';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/hooks/use-toast';
 
   const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
     const { productdetails } = params; 
@@ -17,6 +20,7 @@ import { toast } from 'sonner';
     const [error, setError] = useState<string | null>(null); 
     const [quantity, setQuantity] = useState<number>(1)
     const { addToCart } = useCart();
+    const { toast } = useToast()
 
     useEffect(()=>{
       const fetchData = async() =>{
@@ -127,17 +131,9 @@ const averageRating = () => {
             ))}
         
       </ToggleGroup>
-          <div className='flex justify-center items-center md:mt-4 gap-3 sm:gap-5 md:gap-7 lg:gap-10'>
-          <Link href={'/cart'}><button onClick={()=>{handleAddToCart(productData); toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })}} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
-            <TbShoppingCart /> Add to Cart
-          </button></Link>
-          <div className='flex justify-center gap-5 items-center'>
+          <div className='flex flex-col justify-center items-center md:mt-4 gap-7 sm:gap-5 md:gap-7 lg:gap-10'>
+
+          <div className='flex sm:justify-start justify-center  gap-5 items-center'>
           <button onClick={() => {
                         if (quantity > 1) {
                           setQuantity((prev) => prev - 1);
@@ -150,6 +146,40 @@ const averageRating = () => {
                         }
                       }}  className={` ${productData.inventory<=quantity? "bg-gray-600" : "bg-[#111111]"} -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center`}>{"+"}</button>
           </div>
+          <div className='flex gap-5 justify-between items-center'>
+            <Link href={'/cart'}><button onClick={() => {
+                  toast({
+                    title: "Successful",
+                    description: `${quantity} ${productData.productName} added to cart`,
+                    action: (
+                      <ToastAction altText="Go to cart">
+                        <Link href={"/cart"} className="no-underline">
+                          More Details
+                        </Link>
+                      </ToastAction>
+                    ),
+                  });
+                  handleAddToCart(productData);
+                }} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
+            <TbShoppingCart /> Add to Cart
+          </button></Link>
+            <button onClick={() => {
+                  toast({
+                    title: "Successful",
+                    description: ` ${productData.productName} added to wishlist`,
+                    action: (
+                      <ToastAction altText="Go to Wishlist">
+                        <Link href={"/wishlist"} className="no-underline">
+                          More Details
+                        </Link>
+                      </ToastAction>
+                    ),
+                  });
+                  addToWhishlist(productData._id);
+                }} className='bg-red-700 -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
+            <CiHeart /> Add to Wishlist
+          </button>
+            </div>
           </div>
           
           

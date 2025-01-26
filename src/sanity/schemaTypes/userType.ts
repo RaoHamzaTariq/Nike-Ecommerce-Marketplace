@@ -49,5 +49,11 @@ export default defineType({
       type: 'array',
       of: [{ type: 'string' }], // Array of strings to hold order IDs
     }),
+    defineField({
+      name: 'wishList',
+      title: 'Wish List',
+      type: 'array',
+      of: [{ type: 'string' }], // Array of strings to hold product IDs
+    }),
   ],
 });
