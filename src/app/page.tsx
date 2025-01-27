@@ -12,10 +12,10 @@ export default async function Home() {
         <section className="md:pb-36 sm:pb-28 w-full pb-20">
           <div className="py-1 flex flex-col gap-1 text-[#111111]">
             <p className="text-[17px] text-center font-medium">
-              Hello Nike App
+              Hello BI Structure App
             </p>
             <p className="text-[11px] text-center">
-              Download the app to access everything Nike.{" "}
+            Find Your Flow. Discover Nike Now. 
               <span className="font-medium underline">Get Your Great</span>
             </p>
           </div>

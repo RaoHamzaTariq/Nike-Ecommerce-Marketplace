@@ -55,13 +55,13 @@ const Navbar = () => {
       {/* Main Navbar */}
       <div className="max-h-[60px] h-[60px] flex justify-between items-center px-5 py-[10px]">
         {/* Logo */}
-        <div className="w-16 h-5">
+        <div className="w-24 h-5">
           <Link href={"/"}>
             <Image
-              src={"/Images/home/nike-logo.png"}
-              alt={"Nike Logo"}
-              width={58}
-              height={20}
+              src={"/BI Structure Images/BI Structure.png"}
+              alt={"BI Structure Logo"}
+              width={100}
+              height={90}
             />
           </Link>
         </div>

@@ -6,12 +6,17 @@
       const searchParams = req.nextUrl.searchParams
       const query = searchParams.get('query')
       const slug = searchParams.get('slug')
+      const productId = searchParams.get('productid')
       if(slug){
         const data = await client.fetch(`*[_type == "product" && slug.current == "${slug}"][0]`);      
       return NextResponse.json({ data }, { status: 200 });
       }
       if(query=="name"){
         const data = await client.fetch(`*[_type == "product"]{productName,slug}`);
+      return NextResponse.json({ data }, { status: 200 });
+      }
+      if(productId){
+        const data = await client.fetch(`*[_type == "product" && _id == "${productId}"][0]`);
       return NextResponse.json({ data }, { status: 200 });
       }
       if(query=="category"){

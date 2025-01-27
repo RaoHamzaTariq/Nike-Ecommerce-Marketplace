@@ -33,9 +33,9 @@ export default async function  WishlistPage() {
 
   const user = await currentUser()
 
-  const fetchData = async () => {
+  const fetchUserData = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`,{
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register?email==${user?.emailAddresses[0].emailAddress}`,{
         cache: "no-cache"
       })
       if(!response.ok){
@@ -49,8 +49,23 @@ export default async function  WishlistPage() {
     
   }
 
-  const data : User[] = await fetchData()
-  const userData : User | undefined =  data.find((item: { email: string; }) => item.email === user?.emailAddresses[0].emailAddress)
+  const userData : User = await fetchUserData()
+  const fetchProductData = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/product?email==${userData.wishList[0].productId}`,{
+        cache: "no-cache"
+      })
+      if(!response.ok){
+        throw new Error("Failed to fetch data")
+      }
+      const data = await response.json();
+    return data.data
+    } catch (error) {
+      console.error("Error",error)
+    }
+    
+  }
+  
 
   return (
     <div className="flex flex-col my-5">

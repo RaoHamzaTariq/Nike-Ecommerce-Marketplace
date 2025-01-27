@@ -20,9 +20,7 @@ const Footer = () => {
                     <li>Order Status</li>
                     <li>Delievery</li>
                     <li>Returns</li>
-                    <li>Payment Options</li>
-                    <li>Contact Us On Nike.com Inquires</li>
-                    <li>Contact Us On All Inquires</li>
+                    <li>Payment Options</li>    
                 </ul>
                 <ul className='items-center sm:items-start flex flex-col gap-4 text-[11px] text-[#7e7e7e]'>
                     <li className='text-white text-[10px]'>ABOUT NIKE</li>
@@ -42,14 +40,14 @@ const Footer = () => {
         <div className='min-h-11 flex flex-col justify-between gap-10 sm:flex-row text-[#7e7e7e] '>
             <div className='flex gap-1 sm:gap-4 flex-col sm:flex-row items-center'>
             <FaLocationDot className='text-white'/>
-                <p className='text-white'>India</p>
-                <p className='text-center'>© 2023 Nike, Inc. All Rights Reserved</p>
+                <p className='text-white'>Pakistan</p>
+                <p className='text-center'>© 2025 BI Structure, Inc. All Rights Reserved</p>
             </div>
             <ul className='flex flex-col sm:flex-row gap-7 text-sm justify-center  items-center'>
                 <li>Guides</li>
                 <li>Terms of Sale</li>
                 <li>Term of Use</li>
-                <li>Nike Privacy Policy</li>
+                <li>BI Structure Privacy Policy</li>
             </ul>
         </div>
         
