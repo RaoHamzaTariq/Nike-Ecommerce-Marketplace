@@ -77,7 +77,7 @@ const Cart = () => {
                 </div>
                 {/* Product Price */}
                 <p className="text-sm text-[#111111] font-medium mt-4 sm:mt-0 sm:text-right text-center">
-                  MRP: ₹ {product.price}
+                  MRP: PKR {product.price}
                 </p>
               </div>
             </div>

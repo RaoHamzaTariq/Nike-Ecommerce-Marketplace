@@ -135,7 +135,7 @@ const BestOfAirMax = () => {
                   <h3 className="font-medium">{product.productName}</h3>
                   <h4 className="max-w-[220px]">{product.category}</h4>
                 </div>
-                <p className="font-medium">₹{product.price}</p>
+                <p className="font-medium">PKR {product.price}</p>
               </div>
             </div></Link>
           ))

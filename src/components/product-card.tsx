@@ -24,7 +24,7 @@ const ProductCard = (props:{
                     <p className='text-[#757575] font-normal'>{props.category}</p>
                 </ul>
                 <p className='text-[#757575]'>{props.color} Colour</p>
-                <p className='text-[#111111] font-medium'>{`MRP : ₹ ${props.price}.00`}</p> 
+                <p className='text-[#111111] font-medium'>{`MRP : PKR ${props.price}.00`}</p> 
         </div>
     </div>
   )

@@ -121,7 +121,7 @@ const averageRating = () => {
             {productData.productName}
           </h1>
           <p className='text-base md:text-left text-center'>{productData.description}</p>
-          <h3 className='text-4xl font-medium md:text-left text-center'>{`₹ ${productData.price}.00`}</h3>
+          <h3 className='text-4xl font-medium md:text-left text-center'>{`PKR ${productData.price}.00`}</h3>
           
           <ToggleGroup className='flex gap-5' variant="outline" type="multiple">
             {productData.colors.map((color:string)=>(

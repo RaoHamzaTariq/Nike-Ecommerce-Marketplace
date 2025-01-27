@@ -186,7 +186,7 @@ const CheckOut = () => {
       <div className='text-sm text-[#8d8d8d]'>
         <p className='text-[#111111] max-w-[200px] sm:max-w-[320px]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
         <p>{product.quantity}</p>
-        <p>{`₹ ${product.price}`}</p>
+        <p>{`PKR ${product.price}`}</p>
       </div>
         </div>
           )): <p className="text-lg font-mono text-red-600">First Choose product for order</p>   }

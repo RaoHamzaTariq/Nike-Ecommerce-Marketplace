@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
-import { TbShoppingCart } from "react-icons/tb";
-import { auth, currentUser } from '@clerk/nextjs/server'
+// import Image from "next/image";
+// import Link from "next/link";
+// import { TbShoppingCart } from "react-icons/tb";
+import { currentUser } from '@clerk/nextjs/server'
 import { User } from "@/data/interfaces";
 
 // const wishlistData = [
@@ -50,21 +50,22 @@ export default async function  WishlistPage() {
   }
 
   const userData : User = await fetchUserData()
-  const fetchProductData = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/product?email==${userData.wishList[0].productId}`,{
-        cache: "no-cache"
-      })
-      if(!response.ok){
-        throw new Error("Failed to fetch data")
-      }
-      const data = await response.json();
-    return data.data
-    } catch (error) {
-      console.error("Error",error)
-    }
+  console.log(userData.gender)
+  // const fetchProductData = async () => {
+  //   try {
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/product?email==${userData.wishList[0].productId}`,{
+  //       cache: "no-cache"
+  //     })
+  //     if(!response.ok){
+  //       throw new Error("Failed to fetch data")
+  //     }
+  //     const data = await response.json();
+  //   return data.data
+  //   } catch (error) {
+  //     console.error("Error",error)
+  //   }
     
-  }
+  // }
   
 
   return (
