@@ -1,5 +1,4 @@
 // ./schemas/order.js
-
 import { defineField, defineType } from "sanity";
 
 export const orderType = defineType({
@@ -7,43 +6,104 @@ export const orderType = defineType({
   title: 'Order',
   type: 'document',
   fields: [
-       defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'number'
+    defineField({
+      name: 'customerName',
+      title: 'Customer Name',
+      type: 'string',
+      validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'quantity',
-      title: 'Quantity',
-      type: 'number'
-    }),
-    defineField({
-      name: 'product_id',
-      title: 'Product ID',
-      type: 'reference',
-      to: [{ type: 'product' }] // Reference to product schema
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+      validation: Rule => Rule.required().email()
     }),
     defineField({
       name: 'customer_id',
-      title: 'Customer ID',
+      title: 'Customer Id',
       type: 'reference',
-      to: [{ type: 'user' }] // Reference to user schema
+      to: [{ type: 'user' }],
+      validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'order_date',
+      name: 'completionStatus',
+      title: 'Completion Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Pending', value: 'pending' },
+          { title: 'Processing', value: 'processing' },
+          { title: 'Shipped', value: 'shipped' },
+          { title: 'Delivered', value: 'delivered' },
+          { title: 'Cancelled', value: 'cancelled' }
+        ]
+      },
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'orderDate',
       title: 'Order Date',
-      type: 'datetime'
+      type: 'datetime',
+      validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'status',
-      title: 'Status',
-      type: 'boolean',
+      name: 'paymentStatus',
+      title: 'Payment Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Pending', value: 'pending' },
+          { title: 'Paid', value: 'paid' },
+          { title: 'Failed', value: 'failed' },
+          { title: 'Refunded', value: 'refunded' }
+        ]
+      },
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'productDetails',
+      title: 'Product Details',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'product_id',
+              title: 'Product',
+              type: 'reference',
+              to: [{ type: 'product' }],
+              validation: Rule => Rule.required()
+            }),
+            defineField({
+              name: 'quantity',
+              title: 'Quantity',
+              type: 'number',
+              validation: Rule => Rule.required().min(1)
+            })
+          ],
+          preview: {
+            select: {
+              title: 'product_id.name',
+              subtitle: 'quantity'
+            }
+          }
+        }
+      ]
     })
   ],
   preview: {
     select: {
-      title: 'order_id', // Display order ID in preview
-      subtitle: 'price' // Optionally show price as subtitle
+      title: 'customerName',
+      subtitle: 'email',
+      date: 'orderDate'
+    },
+    prepare(selection) {
+      const { title, subtitle, date } = selection;
+      return {
+        title: title,
+        subtitle: `${subtitle} - ${new Date(date).toLocaleDateString()}`,
+      };
     }
   }
 });

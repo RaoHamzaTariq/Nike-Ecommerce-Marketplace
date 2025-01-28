@@ -34,18 +34,80 @@
     }
   }
 
-  export async function POST(req:NextRequest) {
-    const { slug } = await req.json();
-    
-    try {
-      const data = await client.fetch(`*[_type == "product" && slug.current == "${slug}"][0]`);
-      
-      return NextResponse.json({ data }, { status: 200 });
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 }); 
+
+  
+
+
+export async function POST(req: NextRequest) {
+  try {
+    // Parse request body safely
+    const body = await req.json();
+    const url = new URL(req.url);
+    const isWishlist = url.searchParams.get("query") === "wishlist";
+
+    // Wishlist Products Fetch
+    if (isWishlist) {
+      const { wishlistIds } = body;
+
+      // Validate wishlist input
+      if (!wishlistIds || !Array.isArray(wishlistIds)) {
+        return NextResponse.json(
+          { error: "Invalid or missing wishlist IDs" },
+          { status: 400 }
+        );
+      }
+
+      // Fetch wishlist products
+      const products = await client.fetch(`
+        *[_type == "product" && _id in $wishlistIds]{
+          _id,
+          productName,
+          price,
+          "imageUrl": image.asset->url,
+          slug
+        }
+      `, { wishlistIds });
+
+      return NextResponse.json({ products }, { status: 200 });
     }
+
+    // Single Product Fetch
+    const { slug } = body;
+
+    // Validate slug
+    if (!slug) {
+      return NextResponse.json(
+        { error: "Missing product slug" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch specific product
+    const product = await client.fetch(`
+      *[_type == "product" && slug.current == $slug][0]`, { slug });
+
+    // Handle product not found
+    if (!product) {
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ product }, { status: 200 });
+
+  } catch (error) {
+    console.error("Detailed Product Fetch Error:",error);
+
+    return NextResponse.json(
+      { 
+        error: "Failed to fetch data", 
+      }, 
+      { status: 500 }
+    );
   }
+}
+
 
 
   // Define the POST function to handle incoming review submissions

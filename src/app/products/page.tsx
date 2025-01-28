@@ -7,6 +7,7 @@ import { Product } from '@/data/interfaces';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Pagination from 'react-paginate';
+import Loading from '@/components/ui/loading';
 
 
 const Products =  () => {
@@ -16,6 +17,8 @@ const Products =  () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number] | null>(null);
+
+  const [loading,setLoading] = useState(true)
 
   const [currentPage, setCurrentPage] = useState(0);
   const [productsPerPage] = useState(12);
@@ -32,7 +35,7 @@ const Products =  () => {
 
         const data = await response.json();
         const categoryData = await categoryResponse.json();
-
+        setLoading(false)
         setAllProducts(data.data); // Store all products
         setProducts(data.data); // Initialize filtered products
         setCategories(Array.from(new Set(categoryData.data)));   // Ensure unique categories
@@ -106,6 +109,11 @@ const Products =  () => {
   const handlePriceRangeSelection = (range: [number, number]) => {
     setSelectedPriceRange(range);
   };
+
+
+  if(loading){
+    return <Loading type='product-listing'/>
+  }
 
   return (
     <div className="md:pb-36 sm:pb-28 pb-20 mt-10 flex flex-col gap-3 mx-3 sm:mx-5 md:mx-7 lg:mx-10">

@@ -8,9 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      transitionProperty: {
+        'slide': 'transform',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

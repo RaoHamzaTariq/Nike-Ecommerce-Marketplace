@@ -5,7 +5,7 @@ import { TiSocialInstagram } from 'react-icons/ti'
 
 const Footer = () => {
   return (
-    <div className='min-h-[331px] justify-between h-auto flex flex-col  gap-10 sm:gap-3 bg-[#111111] md:px-7 md:pt-7 sm:px-4 sm:pt-2 px-2 py-5'>
+    <div className=' min-h-[331px] justify-between h-auto flex flex-col  gap-10 sm:gap-3 bg-[#111111] md:px-7 md:pt-7 sm:px-4 sm:pt-2 px-2 py-5'>
         <div className='min-h-[213px] flex flex-col sm:flex-row items-center sm:items-start justify-between gap-10'>
             <div className='flex items-center sm:items-start flex-col sm:flex-row gap-10 sm:gap-7 md:gap-12 lg:gap-28'>
                 <ul className='items-center sm:items-start flex flex-col gap-4 text-[10px] text-white'>

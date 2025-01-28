@@ -20,6 +20,22 @@ export interface Product {
     };
 }
 
+export interface Wishlist {
+  productId:string,
+  _key:string
+}
+
+export interface WishlistProduct {
+  _id: string;
+  productName: string;
+  price: number;
+  imageUrl?: string;
+  slug : {
+    current: string;
+    _type:string
+  }
+}
+
 export interface User {
     firstName: string;
     gender: 'Male' | 'Female';
@@ -28,7 +44,7 @@ export interface User {
     email: string;
     country: string;
     lastName: string;
-    wishList:string[]
+    wishList:Wishlist[]
   }
   
 
@@ -48,4 +64,22 @@ export interface User {
     rating: number;             
     customerName: string;   
     comment: string;
+  }
+
+export interface Order {
+    _id: string;
+    customerName: string;
+    customer_id: string;
+    email: string;
+    completionStatus: 'pending' | 'processing' | 'completed' | 'cancelled';
+    orderDate: string;
+    paymentStatus: 'paid' | 'unpaid' | 'refunded';
+    productDetails: {
+      quantity: number;
+      productName: string;
+      productPrice: number;
+      productImage: string;
+      productSubtotal: number;
+    }[];
+    totalAmount?: number;
   }
