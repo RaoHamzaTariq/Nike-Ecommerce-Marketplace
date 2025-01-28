@@ -187,19 +187,24 @@ import { MessageCircleIcon, StarIcon } from 'lucide-react';
         <h2 className="text-2xl font-bold text-gray-800">Customer Reviews</h2>
         <div className="flex items-center space-x-2">
           <span className="text-3xl font-extrabold text-primary-600">
-            {productData.reviews.reduce((acc, review) => acc + review.rating, 0) / productData.reviews.length}
+            {productData?.reviews?.length > 0 ? productData.reviews.reduce((acc, review) => acc + review.rating, 0) / productData.reviews.length : 0}
           </span>
           <div className="flex text-yellow-400">
           {[...Array(5)].map((_, index) => (
-        <StarIcon
-          key={index}
-          className={`h-6 w-6 ${
-            index < Math.round(productData.reviews.reduce((acc, review) => acc + review.rating, 0) / productData.reviews.length) // Use the number returned by averageRating
-              ? 'text-yellow-500'
-              : 'text-gray-300'
-          }`}
-              />
-            ))}
+  <StarIcon
+    key={index}
+    className={`h-6 w-6 ${
+      index < Math.round(
+        productData?.reviews?.length > 0 
+          ? productData.reviews.reduce((acc, review) => acc + review.rating, 0) / productData.reviews.length 
+          : 0
+      )
+        ? 'text-yellow-500'
+        : 'text-gray-300'
+    }`}
+  />
+))}
+
           </div>
         </div>
       </div>
