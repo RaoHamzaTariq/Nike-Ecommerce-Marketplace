@@ -1,204 +1,298 @@
-'use client'
-import React from 'react'
-import { TbTruckDelivery } from 'react-icons/tb'
-import Image from 'next/image'
-import { useCart } from '@/components/context/CartContext';
-import { CartProducts } from '@/data/interfaces';
-import { urlFor } from '@/sanity/lib/image';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { TbTruckDelivery } from "react-icons/tb";
+import Image from "next/image";
+import { useCart } from "@/components/context/CartContext";
+import { CartProducts } from "@/data/interfaces";
+import { urlFor } from "@/sanity/lib/image";
+import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
 
 const CheckOut = () => {
-  const {cart} = useCart();
-  
+  const { cart, clearCart } = useCart();
+  const router = useRouter();
+
+  // Calculate cart totals
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingCost = 0; // Free shipping
+  const total = subtotal + shippingCost;
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    fullAddress: "",
+    postalCode: "",
+    state: "Sindh",
+    city: "",
+    country: "Pakistan",
+    email: "",
+    phoneNumber: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  // Redirect if cart is empty
+  useEffect(() => {
+    if (cart.length === 0) {
+      router.push('/cart');
+      toast.error("Your cart is empty!");
+    }
+  }, [cart, router]);
+
+  // Form validation
+  const validateForm = () => {
+    if (!formData.firstName.trim()) return "First name is required";
+    if (!formData.lastName.trim()) return "Last name is required";
+    if (!formData.fullAddress.trim()) return "Address is required";
+    if (!formData.postalCode.trim()) return "Postal code is required";
+    if (!formData.city.trim()) return "City is required";
+    if (!formData.email.trim()) return "Email is required";
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) return "Invalid email format";
+    if (!formData.phoneNumber.trim()) return "Phone number is required";
+    if (!/^\d{11}$/.test(formData.phoneNumber.replace(/[- ]/g, ''))) 
+      return "Please enter a valid 11-digit phone number";
+    return null;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const validationError = validateForm();
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const orderData = {
+        ...formData,
+        productDetails: cart.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        total,
+      };
+
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success("Order placed successfully!");
+        clearCart();
+        router.push('/order-confirmation');
+      } else {
+        throw new Error(result.error || "Failed to place order");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to place order. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-PK', {
+      style: 'currency',
+      currency: 'PKR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   return (
-    <div className='w-full font-inter flex justify-center mt-10 items-center'>
-    <div className='max-w-[880px] lg:gap-[120px] md:gap-[70px] sm:gap-[35px] sm:flex-row flex-col mb-24 mx-5 flex items-start'>
-        <div className='max-w-[440px]'>
-        <div className='pt-5 flex flex-col gap-1'>
-            <h4 className='text-xl font-medium '>How would you like to get your order?</h4>
-            <div className='flex flex-col gap-6 pb-6'>
-            <p className='text-[#757575] text-base'>{"Customs regulation for India require a copy of the recipient's KYC. The address on the KYC needs to match the shipping address. Our courier will contact yock the link for more information. Learn More"}</p>
-            <button className='flex gap-6 py-7 items-center rounded-lg px-5 border-[#111111] border-2 w-full'><TbTruckDelivery className='text-2xl'/>  Deliver it</button>
-            </div>
-        </div>
-        <div className="text-black py-1 flex flex-col  gap-[14px]">
-        <h4 className='text-xl font-medium '>Enter your name and address:</h4>
+    <div className="w-full font-inter flex justify-center mt-10 items-center bg-gray-50 py-10">
+      <div className="max-w-[880px] lg:gap-[120px] md:gap-[70px] sm:gap-[35px] sm:flex-row flex-col mb-24 mx-5 flex items-start bg-white p-8 rounded-lg shadow-lg">
+        {/* Left Section - Form */}
+        <div className="max-w-[440px] w-full">
+          <h2 className="text-2xl font-bold text-[#111111] mb-6">Checkout</h2>
 
-      <input
-        type="text"
-        className="w-full text-[#111111] border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="First Name"
-      />
-      <input
-        type="text"
-        className="w-full border text-[#111111] rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Last Name"
-      />
-      <input
-        type="text"
-        className="w-full border text-[#111111] rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Address Line 1"
-      />
-      <p className="text-xs text-[#8d8d8d]">
-      We do not ship to P.O. boxes
-      </p>
-      <input
-        type="text"
-        className="w-full border text-[#111111] rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Address Line 2"
-      />
-      <div className="flex w-full flex-row gap-4">
-        <input
-          type="text"
-          className="w-full text-center sm:w-1/2 border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-          placeholder="Postal Code"
-        />
-        <input
-          type="text"
-          className="w-full text-center sm:w-1/2 border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-          placeholder="Locality"
-        />
-      </div>
-      <div className="flex w-full flex-row gap-4">
-      <select
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        defaultValue="State/Territory"
-      >
-        <option>State/Territory</option>
-        <option>Punjab</option>
-        <option>Bihar</option>
-        <option>Maharashtra</option>
-      </select>
-      <select
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        defaultValue="India"
-      >
-        <option>India</option>
-        <option>United States</option>
-        <option>United Kingdom</option>
-        <option>Canada</option>
-      </select>
-      </div>
-      
-        <div className="flex items-center  gap-3">
-          <input type="checkbox" />
-          <p className="text-[#111111]">Save this address to my profile</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <input type="checkbox" />
-          <p className="text-[#111111]">Make this my preferred address</p>
-        </div>
-      
-    </div>
-        <div className='text-black py-1 flex flex-col pt-5 pb-2 gap-7'>
-        <h4 className='text-xl font-medium '>{"What's your contact information?"}</h4>
-            <div className='flex flex-col'>
-            <input
-        type="text"
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Email"
-      />
-      <p className="text-xs mx-4 text-[#8d8d8d]">
-      A confirmation email will be sent after checkout.
-      </p>
+          {/* Delivery Option */}
+          <div className="mb-8">
+            <h4 className="text-xl font-medium mb-4">Delivery Method</h4>
+            <p className="text-[#757575] text-base mb-6">
+              Standard delivery time is 3-5 business days. Our courier will contact you to confirm delivery.
+            </p>
+            <div className="flex gap-6 py-4 items-center rounded-lg px-5 border-[#111111] border-2 bg-gray-50">
+              <TbTruckDelivery className="text-2xl" />
+              <span className="font-medium">Standard Delivery (Free)</span>
             </div>
-            <div className='flex flex-col'>
-            <input
-        type="text"
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Phone Number"
-      />
-      <p className="text-xs mx-4 text-[#8d8d8d]">
-      A carrier might contact you to confirm delivery.
-      </p>
-            </div>
-        </div>
-        <div className='text-black py-1 flex flex-col pt-5 pb-2 gap-7'>
-        <h4 className='text-xl font-medium '>{"What's your PAN?"}</h4>
-            <div className='flex flex-col'>
-            <input
-        type="text"
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="PAN"
-      />
-      <p className="text-xs mx-4 text-[#8d8d8d]">
-      Enter your PAN to enable payment with UPI, Net Banking or local card methods
-      </p>
-            </div>
-            <div className='flex flex-col'>
-            <input
-        type="text"
-        className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5]"
-        placeholder="Phone Number"
-      />
-      <p className="text-xs mx-4 text-[#8d8d8d]">
-      A carrier might contact you to confirm delivery.
-      </p>
-            </div>
-            <div className="flex items-center  gap-2">
-          <input type="checkbox" />
-          <p className="text-[#bcbcbc]">Save PAN details to Nike Profile</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" />
-          <p className="text-[#bcbcbc]">{"I have read and consent to eShopWorld processing my information in accordance with the Privacy Statement and Cookie Policy. eShopWorld is a trusted Nike partner."}</p>
-        </div>
-        </div>
-        <button className="bg-[#f5f5f5] min-w-full text-[#757575] mt-14 sm:w-auto sm:px-20 py-3 text-xs">Continue</button>
-        <ul className='flex flex-col gap-7 mt-7 text-[#757575] text-xl font-medium'>
-            <li className='text-[#111111]'>Delivery</li>
-            <li>Shipping</li>
-            <li>Billing</li>
-            <li>Payment</li>
-        </ul>
-    </div>
-    <div className='max-w-[320px] w-[320px] '>
-        <h1 className='text-[#111111] text-5 py-5 font-medium'>Order Summary</h1>
-        <div className='w-full flex flex-col gap-3'>
-            <div className='text-[#8d8d8d] text-base flex justify-between w-full'>
-                <p>Subtotal</p>
-                <p>{"₹ 20890.00"}</p>
-            </div>
-            <div className='text-[#8d8d8d] text-base flex justify-between w-full'>
-                <p>Delivery/Shipping</p>
-                <p>Free</p>
-            </div>
-            <div className='text-[#111111] text-base flex justify-between w-full'>
-                <p>Total</p>
-                <p>{"₹ 20 890.00"}</p>
-            </div>
-            <p className="text-xs text-[#111111]">(The total reflects the price of your order, including all duties and taxes)
-      </p>
-      <div className='flex flex-col items-center sm:items-start mt-5 gap-3'>
-        <p className='text-base font-bold'>{"Order Now For UpTo 40% Off"}</p>
-        {
-          cart.length>0 ? cart.map((product:CartProducts)=>(
-            <div key={product.slug} className='flex flex-col items-center sm:items-start sm:flex-row gap-3'>
-        <Image
-         src={
-                                            product.image
-                                              ? urlFor(product.image).url()
-                                              : "/default-image.png"
-                                          } 
-        alt={"Logo Image"}
-        width={208}
-        height={208}
-      />
-      <div className='text-sm text-[#8d8d8d]'>
-        <p className='text-[#111111] max-w-[200px] sm:max-w-[320px]'>{"Nike Dri-FIT ADV TechKnit Ultra Men's Short-Sleeve Running Top"}</p>
-        <p>{product.quantity}</p>
-        <p>{`PKR ${product.price}`}</p>
-      </div>
-        </div>
-          )): <p className="text-lg font-mono text-red-600">First Choose product for order</p>   }
-        
-      
-        
-        </div>
-      </div>
-        </div>
-    </div>
-    </div>
-  )
-}
+          </div>
 
-export default CheckOut
+          {/* Address Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <h4 className="text-xl font-medium">Shipping Information</h4>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                  placeholder="First Name *"
+                  required
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                  placeholder="Last Name *"
+                  required
+                />
+              </div>
+
+              <input
+                type="text"
+                name="fullAddress"
+                value={formData.fullAddress}
+                onChange={handleInputChange}
+                className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                placeholder="Full Address *"
+                required
+              />
+
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.postalCode}
+                  onChange={handleInputChange}
+                  className="w-1/2 border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                  placeholder="Postal Code *"
+                  required
+                />
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="w-1/2 border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                  placeholder="City *"
+                  required
+                />
+              </div>
+
+              <select
+                name="state"
+                value={formData.state}
+                onChange={handleInputChange}
+                className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                required
+              >
+                <option value="Sindh">Sindh</option>
+                <option value="Punjab">Punjab</option>
+                <option value="KPK">KPK</option>
+                <option value="Balochistan">Balochistan</option>
+                <option value="Gilgit Baltistan">Gilgit Baltistan</option>
+              </select>
+            </div>
+
+            {/* Contact Information */}
+            <div className="space-y-4">
+              <h4 className="text-xl font-medium">Contact Information</h4>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                placeholder="Email *"
+                required
+              />
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                className="w-full border rounded px-4 py-3 text-sm border-[#e5e5e5] focus:outline-none focus:border-[#111111]"
+                placeholder="Phone Number (11 digits) *"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="bg-[#111111] text-white w-full py-3 rounded-lg hover:bg-[#333333] transition-colors disabled:bg-gray-400"
+              disabled={loading || cart.length === 0}
+            >
+              {loading ? "Processing..." : `Pay ${formatCurrency(total)}`}
+            </button>
+          </form>
+        </div>
+
+        {/* Right Section - Order Summary */}
+        <div className="max-w-[320px] w-full mt-8 sm:mt-0">
+          <h2 className="text-2xl font-bold text-[#111111] mb-6">Order Summary</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <p className="text-[#8d8d8d]">Subtotal</p>
+              <p className="text-[#111111]">{formatCurrency(subtotal)}</p>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-[#8d8d8d]">Shipping</p>
+              <p className="text-[#111111]">Free</p>
+            </div>
+            <div className="flex justify-between border-t pt-4">
+              <p className="text-[#111111] font-bold">Total</p>
+              <p className="text-[#111111] font-bold">{formatCurrency(total)}</p>
+            </div>
+          </div>
+
+          {/* Cart Items */}
+          <div className="mt-8 space-y-6">
+            <h3 className="text-lg font-medium">Order Items ({cart.length})</h3>
+            <div className="space-y-4">
+              {cart.map((product: CartProducts) => (
+                <div key={product.slug} className="flex gap-4 items-center">
+                  <Image
+                    src={product.image ? urlFor(product.image).url() : "/default-image.png"}
+                    alt={product.productName}
+                    width={80}
+                    height={80}
+                    className="rounded-lg object-cover"
+                  />
+                  <div>
+                    <p className="text-[#111111] font-medium">{product.productName}</p>
+                    <p className="text-[#8d8d8d] text-sm">Qty: {product.quantity}</p>
+                    <p className="text-[#111111] font-bold">
+                      {formatCurrency(product.price * product.quantity)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CheckOut;

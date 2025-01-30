@@ -22,6 +22,11 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'phone',
+      title: 'Phone Number',
+      type: 'string',
+    }),
+    defineField({
       name: 'dateOfBirth',
       title: 'Date of Birth',
       type: 'date',
@@ -53,7 +58,7 @@ export default defineType({
       name: 'wishList',
       title: 'Wish List',
       type: 'array',
-      of: [{ type: 'string' }], // Array of strings to hold product IDs
-    }),
+      of: [{ type: 'reference', to: { type: 'product' } }],
+    })
   ],
 });

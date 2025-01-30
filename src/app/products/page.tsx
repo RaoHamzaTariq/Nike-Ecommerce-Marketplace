@@ -210,6 +210,7 @@ const Products =  () => {
           price={product.price}
           color={product.colors.length}
           category={product.category}
+          _id={product._id}
         />
       </Link>
     ))}

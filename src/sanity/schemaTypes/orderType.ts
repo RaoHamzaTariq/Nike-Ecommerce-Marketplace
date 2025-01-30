@@ -13,10 +13,9 @@ export const orderType = defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
-      name: 'email',
-      title: 'Email',
+      name: 'phone',
+      title: 'Phone Number',
       type: 'string',
-      validation: Rule => Rule.required().email()
     }),
     defineField({
       name: 'customer_id',
@@ -46,6 +45,7 @@ export const orderType = defineType({
       type: 'datetime',
       validation: Rule => Rule.required()
     }),
+
     defineField({
       name: 'paymentStatus',
       title: 'Payment Status',

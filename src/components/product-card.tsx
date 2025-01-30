@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
+import { addToWishlist } from './Functions/wishlist'
 
 const ProductCard = (props: {
   inventory: number,
@@ -11,7 +12,8 @@ const ProductCard = (props: {
   status: string,
   category: string,
   color: number,
-  price: number
+  price: number,
+  _id:string
 }) => {
   return (
     <div className="group relative bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105">
@@ -66,7 +68,7 @@ const ProductCard = (props: {
               >
                 <FaShoppingCart />
               </button>
-              <button 
+              <button onClick={()=>{addToWishlist(props._id)}}
                 className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
                 aria-label="Add to Wishlist"
               >

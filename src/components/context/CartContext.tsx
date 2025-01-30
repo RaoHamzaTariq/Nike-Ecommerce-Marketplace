@@ -23,8 +23,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartProducts[]>([]);
 
   const addToCart = (item: CartProducts) => {
-    setCart((prevCart) => [...prevCart, item]);
+    const existingItem = cart.find((i) => i.id === item.id);
+  
+    if (existingItem) {
+      setCart((prevCart) =>
+        prevCart.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+        )
+      );
+    } else {
+      setCart((prevCart) => [...prevCart, item]);
+    }
   };
+  
 
   const removeFromCart = (slug: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.slug !== slug));

@@ -9,11 +9,12 @@
   import { urlFor } from '@/sanity/lib/image';
   import { useCart } from '@/components/context/CartContext';
   import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { addToWhishlist } from '@/components/Functions/whishlist';
+import { addToWishlist } from '@/components/Functions/wishlist';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
 import Loading from '@/components/ui/loading';
 import { MessageCircleIcon, StarIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
   const ProductDetail = ({ params }: { params: { productdetails: string } }) => {
     const { productdetails } = params; 
@@ -23,6 +24,7 @@ import { MessageCircleIcon, StarIcon } from 'lucide-react';
     const [quantity, setQuantity] = useState<number>(1)
     const { addToCart } = useCart();
     const { toast } = useToast()
+    const router = useRouter()
 
     useEffect(()=>{
       const fetchData = async() =>{
@@ -64,7 +66,9 @@ import { MessageCircleIcon, StarIcon } from 'lucide-react';
       });
     };
     
-    
+    const handleAddtoWishlist = (id:string) =>{
+      addToWishlist(id);
+    }
       
     if (isLoading) {
       return (
@@ -137,40 +141,49 @@ import { MessageCircleIcon, StarIcon } from 'lucide-react';
                           }
                         }}  className={` ${productData.inventory<=quantity? "bg-gray-600" : "bg-[#111111]"} -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center`}>{"+"}</button>
             </div>
-            <div className='flex gap-5 justify-between items-center'>
-              <Link href={'/cart'}><button onClick={() => {
-                    toast({
-                      title: "Successful",
-                      description: `${quantity} ${productData.productName} added to cart`,
-                      action: (
-                        <ToastAction altText="Go to cart">
-                          <Link href={"/cart"} className="no-underline">
-                            More Details
-                          </Link>
-                        </ToastAction>
-                      ),
-                    });
-                    handleAddToCart(productData);
-                  }} className='bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
-              <TbShoppingCart /> Add to Cart
-            </button></Link>
-              <button onClick={() => {
-                    toast({
-                      title: "Successful",
-                      description: ` ${productData.productName} added to wishlist`,
-                      action: (
-                        <ToastAction altText="Go to Wishlist">
-                          <Link href={"/wishlist"} className="no-underline">
-                            More Details
-                          </Link>
-                        </ToastAction>
-                      ),
-                    });
-                    addToWhishlist(productData._id);
-                  }} className='bg-red-700 -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center'>
-              <CiHeart /> Add to Wishlist
-            </button>
-              </div>
+            <div className="flex gap-5 justify-between items-center">
+      {/* Add to Cart Button */}
+      <Link href={"/cart"}>
+        <button
+          onClick={() => {
+            // Trigger the toast notification
+            toast({
+              title: "Successfully added into Cart ",
+              description: `${quantity} ${productData.productName} added to cart`,
+              action: (
+                <ToastAction altText="Go to Cart">Go to Cart</ToastAction>
+              ),
+            })
+            handleAddToCart(productData)
+            router.push('/cart')
+          }}
+          className="bg-[#111111] -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center"
+        >
+          <TbShoppingCart /> Add to Cart
+        </button>
+      </Link>
+
+      {/* Add to Wishlist Button */}
+      <button
+        onClick={() => {
+          // Trigger the toast notification
+          toast({
+            title: "Successfully added to Wishlist ",
+            description: `${quantity} ${productData.productName} added to wishlist`,
+            action: (
+              <ToastAction altText="Go to Wishlist">Go to Wishlist</ToastAction>
+            ),
+          })
+          
+          // Call the addToWhishlist function
+          handleAddtoWishlist(productData._id)
+          // router.push('/wishlist')
+        }}
+        className="bg-red-700 -mt-4 px-5 rounded-3xl w-fit flex justify-center items-center gap-3 py-2 text-base font-medium text-white sm:text-left text-center"
+      >
+        <CiHeart /> Add to Wishlist
+      </button>
+    </div>
             </div>
             
             

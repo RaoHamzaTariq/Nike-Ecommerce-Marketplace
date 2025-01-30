@@ -70,7 +70,7 @@ export async function GET(req:NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  const { productId, userId  } = await req.json();
+  const { productId, userId } = await req.json();
 
   try {
     const searchParams = req.nextUrl.searchParams;
@@ -83,20 +83,113 @@ export async function PUT(req: NextRequest) {
       }, { status: 400 });
     }
 
-    if (query == "wishlist") {
+    if (query === "wishlist") {
       try {
+        // Fetch the current user data
+        const userData = await client.getDocument(userId);
+
+        // Check if userData is defined
+        if (!userData) {
+          console.error('User data not found for ID:', userId);
+          return NextResponse.json({ 
+            error: 'User data not found' 
+          }, { status: 404 });
+        }
+
+        // Check if the wishList already exists
+        const existingWishlist = userData.wishList || [];
+
+        // Append the product ID to the wishlist as a reference
+        const newWishlist = [...existingWishlist, { _ref: productId, _type: 'reference' }];
+
+        // Update the user document with the new wishlist
         const data = await client.patch(userId)
-          .setIfMissing({ wishList: [] })
-          .append('wishList', [{
-            productId
-          }])
+          .set({ wishList: newWishlist })
           .commit({ autoGenerateArrayKeys: true });
-          
-        return NextResponse.json({ message:"Sucessfully added product to WishList",data }, { status: 200 });
+
+        return NextResponse.json({ 
+          message: "Successfully added product to Wishlist", 
+          data 
+        }, { status: 200 });
       } catch (patchError) {
         console.error('Sanity Patch Error:', patchError);
         return NextResponse.json({ 
           error: 'Failed to add product',
+        }, { status: 500 });
+      }
+    }
+    
+    return NextResponse.json({ 
+      error: 'Invalid query parameter' 
+    }, { status: 400 });
+    
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    return NextResponse.json({ 
+      error: 'Unexpected server error',
+    }, { status: 500 });
+  }
+}
+
+
+
+
+export async function DELETE(req: NextRequest) {
+  const { productId, userId } = await req.json();
+
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const query = searchParams.get('query');
+
+    // Validate input
+    if (!productId || !userId) {
+      return NextResponse.json({ 
+        error: 'Missing required fields' 
+      }, { status: 400 });
+    }
+
+    if (query === "wishlist") {
+      try {
+        // Fetch the current user data
+        const userData = await client.getDocument(userId);
+
+        // Check if userData is defined
+        if (!userData) {
+          console.error('User data not found for ID:', userId);
+          return NextResponse.json({ 
+            error: 'User data not found' 
+          }, { status: 404 });
+        }
+
+        // Check if the wishList already exists
+        const existingWishlist = userData.wishList || [];
+
+        // Find the index of the product ID in the wishlist
+        const index = existingWishlist.findIndex((item: { _ref: string; }) => item._ref === productId);
+
+        // Check if the product ID exists in the wishlist
+        if (index === -1) {
+          return NextResponse.json({ 
+            error: 'Product not found in wishlist' 
+          }, { status: 404 });
+        }
+
+        // Remove the product ID from the wishlist
+        const newWishlist = existingWishlist.filter((item: { _ref: string; }) => item._ref !== productId);
+
+        // Update the user document with the new wishlist
+        const data = await client.patch(userId)
+          .set({ wishList: newWishlist })
+          .commit({ autoGenerateArrayKeys: true });
+
+        return NextResponse.json({ 
+          message: "Successfully removed product from Wishlist", 
+          data 
+        }, { status: 200 });
+      } catch (patchError) {
+        console.error('Sanity Patch Error:', patchError);
+        return NextResponse.json({ 
+          error: 'Failed to remove product',
         }, { status: 500 });
       }
     }

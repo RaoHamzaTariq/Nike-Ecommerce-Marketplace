@@ -8,6 +8,7 @@ import { useCart } from "@/components/context/CartContext";
 import { urlFor } from "@/sanity/lib/image";
 import { FaShoppingCart, FaTag, FaTruck } from "react-icons/fa";
 import { FaCalculator } from "react-icons/fa6";
+import { addToWishlist} from "@/components/Functions/wishlist";
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart();
@@ -87,7 +88,7 @@ const Cart = () => {
                 {/* Action Icons */}
                 <div className="flex gap-4 justify-center sm:justify-start text-xl text-black mt-3">
                   {/* Wishlist Button */}
-                  <button 
+                  <button onClick={()=>{addToWishlist(product.id)}}
                     aria-label="Add to Wishlist"
                     className="hover:text-red-500 transition-colors group"
                   >

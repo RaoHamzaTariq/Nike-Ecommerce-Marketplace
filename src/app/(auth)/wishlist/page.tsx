@@ -2,7 +2,7 @@
 
 import { Wishlist, WishlistProduct } from "@/data/interfaces";
 import { urlFor } from "@/sanity/lib/image";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { 
@@ -11,6 +11,9 @@ import {
   FaTrash  
 } from 'react-icons/fa';
 import Loading from "@/components/ui/loading";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { removeFromWishlist } from "@/components/Functions/wishlist";
 
 
 
@@ -20,8 +23,19 @@ export default function WishlistPage() {
   const [products, setProducts] = useState<WishlistProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const {isSignedIn,isLoaded} = useAuth()
+  const router = useRouter()
+
+  if(isLoaded){
+    if(!isSignedIn){
+      router.push("/login")
+    }
+  }
+ 
+  
 
   useEffect(() => {
+    
     const fetchWishlist = async () => {
       try {
         setLoading(true);
@@ -48,7 +62,7 @@ export default function WishlistPage() {
           return;
         }
         // Fetch product data for wishlist
-        const wishlistIds = wishlist.map((item: Wishlist) => item.productId);
+        const wishlistIds = wishlist.map((item: Wishlist) => item._ref);
   
         const productResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/products?query=wishlist`,
@@ -73,14 +87,15 @@ export default function WishlistPage() {
         setLoading(false);
       }
     };
+    
 
     if (user) fetchWishlist(); // Fetch wishlist only when user is available
   }, [user]); // Dependency on `user`
 
   // Render individual product card
   const renderProduct = (product: WishlistProduct) => (
-    <div 
-    key={product._id} 
+   <Link key={product?._id} href={`/products/${product?.slug?.current}`}>
+     <div 
     className="group relative bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
   >
     {/* Wishlist Badge */}
@@ -116,7 +131,7 @@ export default function WishlistPage() {
           >
             <FaShoppingCart />
           </button>
-          <button 
+          <button onClick={()=>{removeFromWishlist(product._id)}}
             className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
             aria-label="Remove from Wishlist"
           >
@@ -126,6 +141,7 @@ export default function WishlistPage() {
       </div>
     </div>
   </div>
+  </Link>
   );
 
   // Loading state

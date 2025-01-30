@@ -21,8 +21,9 @@ export interface Product {
 }
 
 export interface Wishlist {
-  productId:string,
-  _key:string
+  _ref:string,
+  _key:string,
+  _type: string,
 }
 
 export interface WishlistProduct {
