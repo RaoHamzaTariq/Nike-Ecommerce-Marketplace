@@ -1,51 +1,46 @@
 // ./schemas/order.js
 import { defineField, defineType } from "sanity";
 
-export const orderType = defineType({
+export default defineType({
   name: 'order',
   title: 'Order',
   type: 'document',
   fields: [
     defineField({
+      name: 'customer_id',
+      title: 'Customer Reference',
+      type: 'reference',
+      to: [{ type: 'user' }], // Assuming there's a customer schema
+      description: 'Reference to the customer placing the order, identified by their email.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'customerName',
       title: 'Customer Name',
       type: 'string',
-      validation: Rule => Rule.required()
+      description: 'Full name of the customer placing the order.',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'phone',
+      name: 'email',
+      title: 'Email Address',
+      type: 'string',
+      description: 'Email address of the customer.',
+      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: 'phoneNumber',
       title: 'Phone Number',
       type: 'string',
-    }),
-    defineField({
-      name: 'customer_id',
-      title: 'Customer Id',
-      type: 'reference',
-      to: [{ type: 'user' }],
-      validation: Rule => Rule.required()
-    }),
-    defineField({
-      name: 'completionStatus',
-      title: 'Completion Status',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Pending', value: 'pending' },
-          { title: 'Processing', value: 'processing' },
-          { title: 'Shipped', value: 'shipped' },
-          { title: 'Delivered', value: 'delivered' },
-          { title: 'Cancelled', value: 'cancelled' }
-        ]
-      },
-      validation: Rule => Rule.required()
+      description: 'Contact phone number of the customer.',
     }),
     defineField({
       name: 'orderDate',
       title: 'Order Date',
       type: 'datetime',
-      validation: Rule => Rule.required()
+      description: 'The date and time when the order was placed.',
+      validation: (Rule) => Rule.required(),
     }),
-
     defineField({
       name: 'paymentStatus',
       title: 'Payment Status',
@@ -55,10 +50,26 @@ export const orderType = defineType({
           { title: 'Pending', value: 'pending' },
           { title: 'Paid', value: 'paid' },
           { title: 'Failed', value: 'failed' },
-          { title: 'Refunded', value: 'refunded' }
-        ]
+        ],
       },
-      validation: Rule => Rule.required()
+      description: 'Current status of the payment for this order.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'orderStatus',
+      title: 'Order Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Pending', value: 'pending' },
+          { title: 'Processing', value: 'processing' },
+          { title: 'Shipped', value: 'shipped' },
+          { title: 'Delivered', value: 'delivered' },
+          { title: 'Cancelled', value: 'cancelled' },
+        ],
+      },
+      description: 'Current status of the order.',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'productDetails',
@@ -66,44 +77,33 @@ export const orderType = defineType({
       type: 'array',
       of: [
         {
-          type: 'object',
+          type: 'object', // Using object type for structured product details
           fields: [
             defineField({
               name: 'product_id',
-              title: 'Product',
+              title: 'Product ID',
               type: 'reference',
-              to: [{ type: 'product' }],
-              validation: Rule => Rule.required()
+              to: [{ type: 'product' }], 
+              description: "Unique identifier for the product.",
+              validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'quantity',
-              title: 'Quantity',
+              title: 'Quantity Ordered',
               type: 'number',
-              validation: Rule => Rule.required().min(1)
-            })
+              description: "Number of units ordered for this product.",
+              validation: (Rule) => Rule.required().min(1),
+            }),
           ],
-          preview: {
-            select: {
-              title: 'product_id.name',
-              subtitle: 'quantity'
-            }
-          }
-        }
-      ]
-    })
+        },
+      ],
+    }),
+    defineField({
+      name: 'total',
+      title: 'Total Amount',
+      type: 'number',
+      description: "Total amount for the order.",
+      validation: (Rule) => Rule.required().min(0),
+    }),
   ],
-  preview: {
-    select: {
-      title: 'customerName',
-      subtitle: 'email',
-      date: 'orderDate'
-    },
-    prepare(selection) {
-      const { title, subtitle, date } = selection;
-      return {
-        title: title,
-        subtitle: `${subtitle} - ${new Date(date).toLocaleDateString()}`,
-      };
-    }
-  }
 });

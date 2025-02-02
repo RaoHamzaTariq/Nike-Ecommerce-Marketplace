@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { TbTruckDelivery } from "react-icons/tb";
 import Image from "next/image";
 import { useCart } from "@/components/context/CartContext";
-import { CartProducts } from "@/data/interfaces";
+import { CartProducts, User } from "@/data/interfaces";
 import { urlFor } from "@/sanity/lib/image";
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
+import { fetchUserData } from "@/components/Functions/wishlist";
 
 const CheckOut = () => {
   const { cart, clearCart } = useCart();
@@ -73,19 +74,25 @@ const CheckOut = () => {
     }
 
     setLoading(true);
+    
+    // console.log(orderData)
 
     try {
+      
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || undefined
+      const userData: User = await fetchUserData();
+      
       const orderData = {
         ...formData,
+        customer_id: userData._id,
         productDetails: cart.map(item => ({
           product_id: item.id,
-          quantity: item.quantity,
-          price: item.price
+          quantity: item.quantity
         })),
         total,
       };
-
-      const response = await fetch("/api/order", {
+      
+      const response = await fetch(`${API_URL}/api/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +109,7 @@ const CheckOut = () => {
       if (result.success) {
         toast.success("Order placed successfully!");
         clearCart();
-        router.push('/order-confirmation');
+        router.push('/');
       } else {
         throw new Error(result.error || "Failed to place order");
       }
@@ -135,7 +142,7 @@ const CheckOut = () => {
           <div className="mb-8">
             <h4 className="text-xl font-medium mb-4">Delivery Method</h4>
             <p className="text-[#757575] text-base mb-6">
-              Standard delivery time is 3-5 business days. Our courier will contact you to confirm delivery.
+              Standard delivery time is 3-5 business days. Our courier will contact you to confirm delivery. For Now Payment is available via cash on delivery until the payment gateway is integrated.
             </p>
             <div className="flex gap-6 py-4 items-center rounded-lg px-5 border-[#111111] border-2 bg-gray-50">
               <TbTruckDelivery className="text-2xl" />

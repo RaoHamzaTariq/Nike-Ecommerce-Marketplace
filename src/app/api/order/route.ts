@@ -40,30 +40,30 @@ export async function GET() {
   export async function POST(req: NextRequest) {
       try {
           // Get the order data from the request body
-          const body = await req.json();
+          const orderData = await req.json();
           
-          // Create customer reference using email
-          const customerRef = {
-              _type: 'reference',
-              _ref: body.email // Using email as customer reference
-          };
   
           // 1. Create the order document
           const order = await client.create({
               _type: 'order',
-              customer: customerRef,
-              customerName: `${body.firstName} ${body.lastName}`,
-              email: body.email,
-              phoneNumber: body.phoneNumber,
+              customer_id: {
+                _type: 'reference',
+                _ref: orderData.customer_id // Using email as customer reference
+            },
+              customerName: `${orderData.firstName} ${orderData.lastName}`,
+              email: orderData.email,
+              phoneNumber: orderData.phoneNumber,
               orderDate: new Date().toISOString(),
               paymentStatus: 'pending',
               orderStatus: 'pending',
-              productDetails: body.productDetails.map((item: { product_id: string; quantity: number; }) => ({
-                  _type: 'orderItem',
-                  product_id: item.product_id,
+              productDetails: orderData.productDetails.map((item: { product_id: string; quantity: number; }) => ({
+                  product_id: {
+                    _type: 'reference',
+                    _ref: item.product_id // Using product id as reference
+                  },
                   quantity: item.quantity
               })),
-              total: body.total
+              total: orderData.total
           });
   
           // 2. Create the shipment document
@@ -76,20 +76,46 @@ export async function GET() {
               shippingStatus: 'pending',
               shippingDate: null,
               address: {
-                  _type: 'address',
-                  fullAddress: body.fullAddress,
-                  city: body.city,
-                  state: body.state,
-                  country: body.country,
-                  postalCode: body.postalCode
+                  fullAddress: orderData.fullAddress,
+                  city: orderData.city,
+                  state: orderData.state,
+                  country: orderData.country,
+                  postalCode: orderData.postalCode
               }
           });
-  
+          
+
+          const user = await client.getDocument(orderData.customer_id);
+
+
+          if (!user) {
+            console.error('User data not found for ID');
+            return NextResponse.json({ 
+              error: 'User data not found' 
+            }, { status: 404 });
+          }
+// Check if the wishList already exists
+        const existingorderHistory = user.orderHistory || [];
+
+        // Append the product ID to the wishlist as a reference
+        const newexistingorderHistory = [...existingorderHistory, { _ref: order._id, _type: 'reference' }];
+
+        // Update the user document with the new wishlist
+        const data = await client.patch(user._id)
+          .set({ wishList: newexistingorderHistory })
+          .commit({ autoGenerateArrayKeys: true });
+
+        if(!data){
+          console.log("Order History not updated")
+        }
+
           // Return success response with order and shipment details
           return NextResponse.json({
               success: true,
               order: order._id,
-              shipment: shipment._id
+              shipment: shipment._id,
+              user:user._id,
+              message: 'Order created successfully',
           }, { status: 201 });
   
       } catch (error) {

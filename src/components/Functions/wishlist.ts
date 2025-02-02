@@ -2,7 +2,7 @@
 import { User } from "@/data/interfaces";
 import { currentUser } from "@clerk/nextjs/server";
 
-const fetchUserData = async () => {
+export const fetchUserData = async () => {
   try {
     const user = await currentUser();
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register?email=${user?.emailAddresses[0]?.emailAddress}`);
