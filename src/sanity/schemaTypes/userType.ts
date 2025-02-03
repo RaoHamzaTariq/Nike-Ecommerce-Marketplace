@@ -52,7 +52,7 @@ export default defineType({
       name: 'orderHistory',
       title: 'Order History',
       type: 'array',
-      of: [{ type: 'reference', to: { type: 'product' } }],
+      of: [{ type: 'reference', to: { type: 'order' } }],
     }),
     defineField({
       name: 'wishList',

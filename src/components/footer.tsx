@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 import { FaFacebookF, FaLocationDot, FaTwitter } from 'react-icons/fa6'
 import { IoLogoYoutube } from 'react-icons/io5'
@@ -9,25 +10,23 @@ const Footer = () => {
         <div className='min-h-[213px] flex flex-col sm:flex-row items-center sm:items-start justify-between gap-10'>
             <div className='flex items-center sm:items-start flex-col sm:flex-row gap-10 sm:gap-7 md:gap-12 lg:gap-28'>
                 <ul className='items-center sm:items-start flex flex-col gap-4 text-[10px] text-white'>
-                    <li>FIND A STORE</li>
-                    <li>BECOME A MEMBER</li>
-                    <li>SIGN UP FOR EMAIL</li>
-                    <li>Send Us Feedback</li>
-                    <li>STUDENT DISCOUNTS</li>
+                    <Link href={"/products"}><li>FIND A STORE</li></Link>
+                    <Link href={"/joinus"}><li>BECOME A MEMBER</li></Link>
+                    <Link href={"/joinus"}><li>SIGN UP FOR EMAIL</li></Link>
                 </ul>
                 <ul className='items-center sm:items-start flex flex-col gap-4 text-[11px] text-[#7e7e7e]'>
-                    <li className='text-white text-[10px]'>GET HELP</li>
-                    <li>Order Status</li>
-                    <li>Delievery</li>
-                    <li>Returns</li>
-                    <li>Payment Options</li>    
+                    <Link href={'/contact-us'}><li className='text-white text-[10px]'>GET HELP</li></Link>
+                    <Link href={'/contact-us'}><li>Order Status</li></Link>
+                    <Link href={'/contact-us'}><li>Delievery</li></Link>
+                    <Link href={'/contact-us'}><li>Payment Options</li></Link>  
                 </ul>
                 <ul className='items-center sm:items-start flex flex-col gap-4 text-[11px] text-[#7e7e7e]'>
-                    <li className='text-white text-[10px]'>ABOUT NIKE</li>
-                    <li>News</li>
-                    <li>Careers</li>
-                    <li>Investors</li>
-                    <li>Sustainabilty</li>
+                <Link href={'/about-us'}><li className='text-white text-[10px]'>ABOUT BI STRUCTURE</li></Link>
+                <Link href={'/about-us'}><li>News</li></Link>
+                <Link href={'/about-us'}><li>Careers</li></Link>
+                <Link href={'/about-us'}><li>Investors</li></Link>
+                <Link href={'/about-us'}><li>Sustainabilty</li></Link>
+
                 </ul>   
             </div>
             <div className='flex gap-2 md:gap-4 items-center'>

@@ -77,13 +77,10 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links for Desktop */}
-        <ul className="lg:flex hidden gap-3 md:gap-6 text-[15px] font-medium">
-          <li>News and Featured</li>
-          <li>Men</li>
-          <li>Women</li>
-          <li>Kids</li>
-          <li>Sale</li>
-          <li>SNKRS</li>
+        <ul className="lg:flex hidden gap-3 md:gap-8 text-[15px] font-medium">
+          {['News and Featured','Men','Women','Trending'].map(i=>(
+            <Link key={i} href={`/products?filter=${i.toLowerCase()}`}>{i}</Link>
+          ))}
         </ul>
 
         {/* Search and Icons for Desktop */}
@@ -145,42 +142,10 @@ const Navbar = () => {
 
                 {/* Navigation Links */}
                 <div className="flex flex-col gap-3 pt-4">
-                  <Link
-                    href={"/news-and-featured"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    News and Featured
-                  </Link>
-                  <Link
-                    href={"/men"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    Men
-                  </Link>
-                  <Link
-                    href={"/women"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    Women
-                  </Link>
-                  <Link
-                    href={"/kids"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    Kids
-                  </Link>
-                  <Link
-                    href={"/sale"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    Sale
-                  </Link>
-                  <Link
-                    href={"/snkrs"}
-                    className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                  >
-                    SNKRS
-                  </Link>
+                {['News and Featured','Men','Women','Trending'].map(i=>(
+            <Link className="text-gray-600 hover:text-gray-800 transition-colors duration-200" key={i} href={`/products?filter=${i.toLowerCase()}`}>{i}</Link>
+
+          ))}
                 </div>
               </div>
             </SheetContent>

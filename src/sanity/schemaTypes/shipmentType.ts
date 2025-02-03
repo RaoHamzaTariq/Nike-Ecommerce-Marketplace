@@ -35,7 +35,7 @@ export default defineType({
       description: 'The date when the shipment is scheduled to be shipped.',
     }),
     defineField({
-      name: 'address',
+      name: 'addressDetail',
       title: 'Shipping Address',
       type: 'object', // Using an object type for structured address
       fields: [
@@ -69,7 +69,7 @@ export default defineType({
         defineField({
           name: 'postalCode',
           title: 'Postal Code',
-          type: 'string',
+          type: 'number',
           description: 'Postal code for the shipping address.',
         }),
       ],

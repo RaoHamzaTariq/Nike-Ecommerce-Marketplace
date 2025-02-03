@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Pagination from 'react-paginate';
 import Loading from '@/components/ui/loading';
+import { useSearchParams } from 'next/navigation';
 
 
 const Products =  () => {
@@ -17,11 +18,15 @@ const Products =  () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number] | null>(null);
+  const searchParams = useSearchParams()
+  const search = searchParams.get("filter")
 
   const [loading,setLoading] = useState(true)
 
   const [currentPage, setCurrentPage] = useState(0);
   const [productsPerPage] = useState(12);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +37,6 @@ const Products =  () => {
         if (!response.ok || !categoryResponse.ok) {
           throw new Error('Failed to fetch data');
         }
-
         const data = await response.json();
         const categoryData = await categoryResponse.json();
         setLoading(false)
@@ -45,7 +49,12 @@ const Products =  () => {
     };
 
     fetchData();
+
+
+    
   }, []);
+
+
 
   const pagesCount = Math.ceil(products.length / productsPerPage);
   const handlePageChange = (data: { selected: React.SetStateAction<number> }) => {
@@ -59,21 +68,30 @@ const Products =  () => {
 
   useEffect(() => {
     let filteredProducts = allProducts;
-
+  
+    // Apply gender filter from URL search params
+    if (search === "women") {
+      filteredProducts = filteredProducts.filter((product) => product.category.includes("Women"));
+    } else if (search === "men") {
+      filteredProducts = filteredProducts.filter((product) => product.category.includes("Men"));
+    } else if(search === "trending"){
+      filteredProducts = filteredProducts.filter((product) => product.status.includes("Trending"));
+    }
+  
     // Filter by category
     if (selectedCategories.length > 0) {
       filteredProducts = filteredProducts.filter((product) =>
         selectedCategories.includes(product.category)
       );
     }
-
-    // Filter by gender
+  
+    // Filter by gender (from UI selections)
     if (selectedGenders.length > 0) {
       filteredProducts = filteredProducts.filter((product) =>
-        selectedGenders.includes(product.category.slice(0,5)) // Assuming `gender` field exists in the product object
+        selectedGenders.includes(product.category.slice(0, 5)) 
       );
     }
-
+  
     // Filter by price range
     if (selectedPriceRange) {
       const [minPrice, maxPrice] = selectedPriceRange;
@@ -82,11 +100,11 @@ const Products =  () => {
         return productPrice >= minPrice && productPrice <= maxPrice;
       });
     }
-
-
+  
     setProducts(filteredProducts);
-    setCurrentPage(0); // Reset to the first page after filtering
-  }, [selectedCategories, selectedGenders, selectedPriceRange, allProducts]);
+    setCurrentPage(0); // Reset pagination
+  }, [selectedCategories, selectedGenders, search, selectedPriceRange, allProducts]);
+  
 
 
   // Toggle category selection
@@ -187,7 +205,7 @@ const Products =  () => {
                   name="priceRange"
                   onChange={() => handlePriceRangeSelection([min, max])}
                 />
-                {max === Infinity ? `Above ₹${min}` : `₹${min} - ₹${max}`}
+                {max === Infinity ? `Above PKR${min}` : `PKR ${min} - PKR ${max}`}
               </label>
             ))}
           </div>

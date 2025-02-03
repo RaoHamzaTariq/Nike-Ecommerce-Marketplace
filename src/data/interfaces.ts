@@ -72,15 +72,24 @@ export interface Order {
     customerName: string;
     customer_id: string;
     email: string;
-    completionStatus: 'pending' | 'processing' | 'completed' | 'cancelled';
+    phoneNumber:string;
+    orderStatus: 'pending' | 'processing' | 'completed' | 'cancelled';
     orderDate: string;
-    paymentStatus: 'paid' | 'unpaid' | 'refunded';
+    paymentStatus: 'pending' | 'paid' | 'failed';
     productDetails: {
       quantity: number;
       productName: string;
       productPrice: number;
       productImage: string;
       productSubtotal: number;
+      productCategory: string
     }[];
-    totalAmount?: number;
+    addressDetail:{
+      city:string,
+      postalCode:string,
+      country:string,
+      state:string,
+      fullAddress:string
+    }
+    totalAmount: number;
   }

@@ -2,8 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import BestOfAirMax from "@/components/best-of-air-max";
 import GearUp from "@/components/gearup";
+import { auth } from "@clerk/nextjs/server";
+
 export default async function Home() {
 
+  const { userId } = await auth()
   
   return (
     <>
@@ -26,25 +29,31 @@ export default async function Home() {
               width={1344}
               height={700}
             />
-            <div className="flex flex-col gap-6 justify-between items-center">
-              <p className="text-base -mb-5">First Look</p>
-              <h1 className="text-5xl sm:text-[56px] text-center font-medium">
-                NIKE AIR MAX PLUSE
-              </h1>
-              <p className="text-base text-center max-w-[551px]">
-                Extreme comfort. Hyper durable. Max volume. Introducing the Air
-                Max Pulse —designed to push you past your limits and help you go
-                to the max.
-              </p>
-              <div className="flex gap-5">
-                <button className="text-base  rounded-3xl text-white bg-[#111111] px-4 sm:px-5  py-2">
-                  Notify Me
-                </button>
-                <Link href={"/products"}><button className="text-base rounded-3xl  text-white bg-[#111111] px-4 sm:px-5  py-2">
-                  Shop Air Max
-                </button></Link>
-              </div>
-            </div>
+           <div className="flex flex-col gap-6 justify-between items-center">
+  <p className="text-base -mb-5">Innovate Your Style</p>
+  <h1 className="text-5xl sm:text-[56px] text-center font-medium">
+    BI STRUTURE EXCLUSIVE COLLECTION
+  </h1>
+  <p className="text-base text-center max-w-[551px]">
+    Elevate your fashion. Redefine your comfort. Discover our premium range of products, designed for performance and style.
+  </p>
+  <div className="flex gap-5">
+
+{!userId && <Link href={"/login"}>
+      <button className="text-base rounded-3xl text-white bg-[#111111] px-4 sm:px-5 py-2">
+        Sign In
+      </button>
+    </Link> }
+
+  
+    <Link href={"/products"}>
+      <button className="text-base rounded-3xl text-white bg-[#111111] px-4 sm:px-5 py-2">
+        Explore Collection
+      </button>
+    </Link>
+  </div>
+</div>
+
           </div>
         </section>
 

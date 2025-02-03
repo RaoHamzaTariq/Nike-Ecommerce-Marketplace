@@ -23,7 +23,7 @@ const CheckOut = () => {
     firstName: "",
     lastName: "",
     fullAddress: "",
-    postalCode: "",
+    postalCode: 0,
     state: "Sindh",
     city: "",
     country: "Pakistan",
@@ -46,7 +46,7 @@ const CheckOut = () => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
     if (!formData.fullAddress.trim()) return "Address is required";
-    if (!formData.postalCode.trim()) return "Postal code is required";
+    if (!formData.postalCode) return "Postal code is required";
     if (!formData.city.trim()) return "City is required";
     if (!formData.email.trim()) return "Email is required";
     if (!/^\S+@\S+\.\S+$/.test(formData.email)) return "Invalid email format";
