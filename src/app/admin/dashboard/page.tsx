@@ -104,7 +104,7 @@ export default function AdminDashboard() {
     };
 
     fetchOrders();
-  }, []);
+  }, [user]);
 
   const handleOrderView = (order: Order) => {
     setSelectedOrder(order);

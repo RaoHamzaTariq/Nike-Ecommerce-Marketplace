@@ -78,99 +78,99 @@ const GearUp = () => {
   };
 
   return (
-    <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-3">
-                <p className="text-2xl font-medium">Gear Up</p>
-    <div className='flex flex-col sm:flex-row justify-center items-center gap-3'>
-      {/* Carousel 1 */}
+    <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-6">
+    <p className="text-2xl font-medium">Gear Up</p>
+    <div className='flex flex-col sm:flex-row justify-center items-center gap-6'>
+      {/* Carousel for Men's Products */}
       <div className="w-full lg:w-1/2">
-      <div className="py-1 flex  gap-1 text-[#111111]">
-
-        <div className="flex items-center w-full justify-end gap-3">
-          <p className="text-base font-medium">{"Men's"}</p>
+        <div className="py-1 flex justify-between items-center text-[#111111]">
+          <p className="text-base font-medium">{`Men's`}</p>
           <div className="flex gap-2">
-            <button onClick={scrollLeft1} className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+            <button onClick={scrollLeft1} className="bg-[#e5e5e5] p-2 rounded-full transition-transform hover:bg-gray-300">
               <IoIosArrowBack />
             </button>
-            <button onClick={scrollRight1} className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+            <button onClick={scrollRight1} className="bg-[#e5e5e5] p-2 rounded-full transition-transform hover:bg-gray-300">
               <IoIosArrowForward />
             </button>
           </div>
         </div>
-      </div>
-      <div ref={carouselRef1} className="flex overflow-x-scroll space-x-4 scrollbar-hide px-4">
-        {loading ? (
-          <p>Loading products...</p>
-        ) : products.length > 0 ? (
-          products.map((product: Product) => (
-            <Link href={`/products/${product.slug.current}`} key={product._id}><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
-              <div>
-                <Image
-                  src={product.image ? urlFor(product.image).url() : '/default-image.png'}
-                  alt={`${product.productName} Image`}
-                  width={442}
-                  height={442}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div className="text-base">
-                  <h3 className="font-medium">{product.productName}</h3>
-                  <h4 className="max-w-[220px]">{product.category}</h4>
+        <div ref={carouselRef1} className="flex overflow-x-scroll space-x-4 scrollbar-hide px-4 transition-transform duration-300 ease-in-out">
+          {loading ? (
+            <p>Loading products...</p>
+          ) : products.length > 0 ? (
+            products.map((product) => (
+              <Link href={`/products/${product.slug.current}`} key={product._id}>
+                <div className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px] transition-transform duration-300 hover:scale-105 transform">
+                  <Image
+                    src={product.image ? urlFor(product.image).url() : '/default-image.png'}
+                    alt={`${product.productName} Image`}
+                    width={442}
+                    height={442}
+                    className="rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="flex justify-between">
+                    <div className="text-base">
+                      <h3 className="font-medium">{product.productName}</h3>
+                      <h4 className="max-w-[220px]">{product.category}</h4>
+                    </div>
+                    <p className="font-medium">PKR {product.price}</p>
+                  </div>
                 </div>
-                <p className="font-medium">PKR {product.price}</p>
-              </div>
-            </div></Link>
-          ))
-        ) : (
-          <p>Products not found</p>
-        )}
-      </div>
+              </Link>
+            ))
+          ) : (
+            <p>Products not found</p>
+          )}
+        </div>
       </div>
 
-      {/* Carousel 2 */}
+      {/* Carousel for Women's Products */}
       <div className="w-full lg:w-1/2">
-      <div className="py-1 flex  gap-1 text-[#111111]">
-        <div className="flex w-full items-center gap-3 justify-end">
-          <p className="text-base font-medium">{"Women's"}</p>
+        <div className="py-1 flex justify-between items-center text-[#111111]">
+          <p className="text-base font-medium">{`Women's`}</p>
           <div className="flex gap-2">
-            <button onClick={scrollLeft2} className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+            <button onClick={scrollLeft2} className="bg-[#e5e5e5] p-2 rounded-full transition-transform hover:bg-gray-300">
               <IoIosArrowBack />
             </button>
-            <button onClick={scrollRight2} className="bg-[#e5e5e5] px-4 py-2 rounded-full">
+            <button onClick={scrollRight2} className="bg-[#e5e5e5] p-2 rounded-full transition-transform hover:bg-gray-300">
               <IoIosArrowForward />
             </button>
           </div>
         </div>
-      </div>
-      <div ref={carouselRef2} className="flex overflow-x-scroll space-x-4 scrollbar-hide px-4">
-        {loading ? (
-          <p>Loading products...</p>
-        ) : products.length > 0 ? (
-          products.map((product: Product) => (
-            <Link href={`/products/${product.slug.current}`} key={product._id} ><div  className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px]">
-              <div>
-                <Image
-                  src={product.image ? urlFor(product.image).url() : '/default-image.png'}
-                  alt={`${product.productName} Image`}
-                  width={442}
-                  height={442}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div className="text-base">
-                  <h3 className="font-medium">{product.productName}</h3>
-                  <h4 className="max-w-[220px]">{product.category}</h4>
+        <div ref={carouselRef2} className="flex overflow-x-scroll space-x-4 scrollbar-hide px-4 transition-transform duration-300 ease-in-out">
+          {loading ? (
+            <p>Loading products...</p>
+          ) : products.length > 0 ? (
+            products.map((product) => (
+              <Link href={`/products/${product.slug.current}`} key={product._id}>
+                <div className="flex flex-col gap-5 min-w-[300px] sm:min-w-[250px] md:min-w-[300px] transition-transform duration-300 hover:scale-105 transform">
+                  <Image
+                    src={product.image ? urlFor(product.image).url() : '/default-image.png'}
+                    alt={`${product.productName} Image`}
+                    width={442}
+                    height={442}
+                    className="rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="flex justify-between">
+                    <div className="text-base">
+                      <h3 className="font-medium">{product.productName}</h3>
+                      <h4 className="max-w-[220px]">{product.category}</h4>
+                    </div>
+                    <p className="font-medium">PKR {product.price}</p>
+                  </div>
                 </div>
-                <p className="font-medium">PKR {product.price}</p>
-              </div>
-            </div></Link>
-          ))
-        ) : (
-          <p>Products not found</p>
-        )}
+              </Link>
+            ))
+          ) : (
+            <p>Products not found</p>
+          )}
+        </div>
       </div>
-      </div>
-      </div>
-    </section>
+    </div>
+
+    {/* Additional Styling and Animation */}
+    {/* Add any additional sections or animations here */}
+  </section>
   );
 };
 

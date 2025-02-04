@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 import Link from 'next/link';
 
-const BestOfAirMax = () => {
+const BestOfBIStructure = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -93,7 +93,7 @@ const BestOfAirMax = () => {
   return (
     <section className="md:pb-36 sm:pb-28 pb-20 mx-3 sm:mx-5 md:mx-7 lg:mx-10 flex flex-col gap-3">
       <div className="py-1 flex justify-between gap-1 text-[#111111]">
-        <p className="text-2xl font-medium">Best of Air Max</p>
+        <p className="text-2xl font-medium">Best of BI Structure</p>
         <div className="flex items-center gap-3">
           <p className="text-base font-medium">Shop</p>
           <div className="flex gap-2">
@@ -147,4 +147,4 @@ const BestOfAirMax = () => {
   );
 };
 
-export default BestOfAirMax;
+export default BestOfBIStructure;
