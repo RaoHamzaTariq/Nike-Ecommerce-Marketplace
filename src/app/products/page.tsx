@@ -8,18 +8,16 @@ import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Pagination from 'react-paginate';
 import Loading from '@/components/ui/loading';
-import { useSearchParams } from 'next/navigation';
 
 
-const Products =  () => {
+const Products =  ({ searchParams }: { searchParams: URLSearchParams }) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]); // Store all products
   const [products, setProducts] = useState<Product[]>([]); // Store filtered products
   const [categories, setCategories] = useState<string[]>([]); // Store categories
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number] | null>(null);
-  const searchParams = useSearchParams()
-  const search = searchParams.get("filter")
+  const search = searchParams.get("filter");
 
   const [loading,setLoading] = useState(true)
 
