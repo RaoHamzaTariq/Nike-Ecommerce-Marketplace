@@ -10,14 +10,18 @@ import Pagination from 'react-paginate';
 import Loading from '@/components/ui/loading';
 
 
-const Products =  ({ searchParams }: { searchParams: URLSearchParams }) => {
+const Products =  ({ searchParams }: { searchParams: Record<string, string> }) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]); // Store all products
   const [products, setProducts] = useState<Product[]>([]); // Store filtered products
   const [categories, setCategories] = useState<string[]>([]); // Store categories
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<[number, number] | null>(null);
-  const search = searchParams.get("filter");
+  const search = new URLSearchParams(searchParams).get("filter");
+  
+  useEffect(()=>{
+    console.log(search)
+  },[search]) 
 
   const [loading,setLoading] = useState(true)
 

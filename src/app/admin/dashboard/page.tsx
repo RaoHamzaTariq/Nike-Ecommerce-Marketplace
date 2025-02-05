@@ -40,10 +40,15 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isOrderDetailOpen, setIsOrderDetailOpen] = useState(false);
-  const {user } = useUser()
+  const {user, isLoaded } = useUser()
   const router = useRouter()
 
- 
+  useEffect(() => {
+    if (isLoaded && user?.publicMetadata.role !== "admin") {
+      console.log(user?.publicMetadata.role);
+      router.push('/unauthorized');
+    }
+  }, [isLoaded, user, router]);
 
   const [stats, setStats] = useState({
     totalRevenue: 0,
@@ -55,12 +60,9 @@ export default function AdminDashboard() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
 
-    if(user?.publicMetadata.role === "admin"){
-      router.push('/unauthorized')
-      return
-    }
+
+  useEffect(() => {
 
     const fetchOrders = async () => {
       setIsLoading(true);
