@@ -14,3 +14,4 @@ TC012,Test social media sharing links,Share product on social media > Verify lin
 TC013,Test Login Features,Enter login credentials > Redirect to home page,Login user successfully,Login user successfully,Passed,Low,Login successful
 TC014,Ensure Review and Rating section for each product,Enter comment details > Comment successfully rendered on that product,Feedback submission is successful,Feedback submission is successful,Passed,Low,Feedback form functional
 TC015,Test Join Us: Email Verification and Data Storage,Enter details > Send email > Enter OTP > Store in CMS,User details stored successfully after verification,User details stored successfully,Passed,Medium,Join Us process functional
+TC016,Checks the admin dashboard access to user,Go /admin/dashboard,User is directed to unauthorized page,User is directed to unauthorized page,Passed,Low,No issues found
