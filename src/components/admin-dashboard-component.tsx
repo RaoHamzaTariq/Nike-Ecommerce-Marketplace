@@ -34,6 +34,32 @@ export const OrderDetailsDialog = ({
 }) => {
   const totalAmount = calculateTotalAmount(order.productDetails);
 
+  const handleCompletOrder = async (orderId:string) =>{ 
+    try {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || undefined
+        const response = await fetch(`${API_URL}/api/order`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId,
+                        orderStatus: 'delivered',
+                        paymentStatus: 'paid'
+                        })
+            }
+        )
+        if(!response){
+            throw new Error("Failed to complete order")
+        }
+        const data = await response.json()
+        console.log(data)
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
   return (
       <Dialog open={open} onOpenChange={onClose}>
           <DialogContent className="max-w-4xl bg-opacity-90 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-gray-800">
@@ -61,6 +87,11 @@ export const OrderDetailsDialog = ({
                           <p><strong>Address:</strong> {order.addressDetail.fullAddress}, {order.addressDetail.city}, {order.addressDetail.state}</p>
                           <p><strong>Total Amount:</strong> PKR {totalAmount}</p>
                           <p><strong>Status:</strong> <OrderStatusBadge status={order.orderStatus} /></p>
+                          <p><strong>Payment:</strong> <OrderStatusBadge status={order.paymentStatus} /></p>
+                          {order.orderStatus!=="delivered" && 
+                            <Button onClick={()=>{handleCompletOrder(order._id)}} className="bg-green-800">Mark as Complete</Button>
+                          }
+                          
                       </CardContent>
                   </Card>
 
@@ -116,6 +147,7 @@ export const OrderStatusBadge = ({ status }: { status: string }) => {
 
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Button } from "./ui/button";
 
 const revenueData = [
     { date: '2023-10-01', revenue: 1200 },

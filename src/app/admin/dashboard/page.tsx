@@ -84,7 +84,7 @@ export default function AdminDashboard() {
             (order: Order) => order.orderStatus === "pending"
           ).length,
           completedOrders: data.data.filter(
-            (order: Order) => order.orderStatus === "completed"
+            (order: Order) => order.orderStatus === "delivered"
           ).length,
           totalQuantitySold: data.data.reduce(
             (total: number, order: Order) =>
@@ -121,9 +121,9 @@ export default function AdminDashboard() {
     <div className="container mx-auto p-4 md:p-6">
       <header className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">Admin Dashboard</h1>
-        <Button variant="default" className="mt-4 md:mt-0 px-6 py-2">
+        {/* <Button variant="default" className="mt-4 md:mt-0 px-6 py-2">
           Add New Order
-        </Button>
+        </Button> */}
       </header>
 
       {/* Statistics Cards */}

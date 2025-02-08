@@ -73,7 +73,7 @@ export interface Order {
     customer_id: string;
     email: string;
     phoneNumber:string;
-    orderStatus: 'pending' | 'processing' | 'completed' | 'cancelled';
+    orderStatus: 'pending' | 'delivered' | 'processing' | 'cancelled'| 'shipped' ;
     orderDate: string;
     paymentStatus: 'pending' | 'paid' | 'failed';
     productDetails: {

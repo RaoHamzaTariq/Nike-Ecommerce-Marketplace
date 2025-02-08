@@ -32,9 +32,6 @@ const ALL_ORDERS_QUERY = `
   }
 
 `;
-
-
-
 export async function GET() {
     try {
     const data = await client.fetch(ALL_ORDERS_QUERY);
@@ -45,7 +42,6 @@ export async function GET() {
       return NextResponse.json({ error: 'Failed to fetch order' }, { status: 500 }); 
     }
   }
-
 
 export async function POST(req: NextRequest) {
     try {
@@ -137,5 +133,44 @@ export async function POST(req: NextRequest) {
             success: false,
             error: 'Failed to process order'
         }, { status: 500 });
+    }
+}
+
+
+export async function PUT(req:NextRequest) {
+    try {
+        const {orderId,orderStatus,paymentStatus} = await req.json();
+        if(!orderId || !orderStatus || !paymentStatus){
+            return NextResponse.json({
+                success: false,
+                error: 'Missing required parameters',
+            },{
+                status: 400
+            })
+        }
+
+        const updatedOrder = await client.patch(orderId)
+            .set({ orderStatus ,paymentStatus })
+            .commit();
+        
+            if (!updatedOrder) {
+                console.log("Order not updated");
+            }
+        
+        return NextResponse.json({
+            success: true,
+            order: updatedOrder._id,
+            message: 'Order updated successfully',
+            }, { status: 200 });
+
+    } catch (error) {
+        console.error('Error updating order:', error);
+        return NextResponse.json({
+            success: false,
+            error: 'Failed to update order'
+        },
+        {
+            status: 500
+        })
     }
 }
